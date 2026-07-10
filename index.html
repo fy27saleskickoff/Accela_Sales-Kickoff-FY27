@@ -396,16 +396,18 @@ section { padding:100px 40px; }
 .travel-section .section-label { color:var(--teal); }
 .travel-section .section-title { color:var(--white); }
 .travel-section .section-subtitle { color:rgba(255,255,255,0.55); }
-.travel-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:24px; }
+.travel-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:24px; align-items:stretch; }
 .travel-card {
   border-radius:12px; overflow:hidden;
   transition:all 0.35s; position:relative;
+  display:flex; flex-direction:column;
 }
 .travel-card:hover { transform:translateY(-6px) scale(1.02); box-shadow:0 16px 40px rgba(0,0,0,0.3); }
 .travel-card-img { height:180px; background-size:cover; background-position:center; }
 .travel-card-body {
   background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1);
   border-top:none; padding:24px; backdrop-filter:blur(8px);
+  flex:1; display:flex; flex-direction:column;
 }
 .travel-card h3 { font-size:17px; margin-bottom:10px; color:var(--white); }
 .travel-card p { font-size:13px; color:rgba(255,255,255,0.6); line-height:1.6; }
@@ -417,6 +419,22 @@ section { padding:100px 40px; }
 }
 
 /* RESTAURANTS */
+#dining {
+  position:relative; background:var(--sand);
+}
+#dining::before {
+  content:''; position:absolute; inset:0;
+  background: url(images/charleston-street.jpg) center/cover no-repeat;
+  opacity:0.06;
+  pointer-events:none;
+}
+#dining::after {
+  content:''; position:absolute; inset:0;
+  background: url(images/accela-logo-blues-white.png) center/200px no-repeat;
+  opacity:0.04;
+  pointer-events:none;
+}
+#dining > .container { position:relative; z-index:1; }
 .rest-category { margin-bottom:56px; }
 .rest-category h2 {
   font-size:26px; color:var(--navy); margin-bottom:6px;
@@ -426,8 +444,9 @@ section { padding:100px 40px; }
 .rest-category > p { font-size:14px; color:var(--text-secondary); margin-bottom:24px; line-height:1.5; }
 .rest-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
 .rest-card {
-  background:var(--sand); border-radius:12px; overflow:hidden;
+  background:var(--white); border-radius:12px; overflow:hidden;
   transition:all 0.3s; cursor:pointer;
+  box-shadow:0 2px 12px rgba(0,0,0,0.06);
 }
 a.rest-link { text-decoration:none; color:inherit; display:block; }
 .rest-card:hover { transform:translateY(-4px); box-shadow:0 12px 32px rgba(0,0,0,0.08); }
