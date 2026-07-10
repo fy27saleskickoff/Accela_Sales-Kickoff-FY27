@@ -240,7 +240,24 @@ section { padding:100px 40px; }
 .agenda-time .dur { font-size:12px; font-weight:400; color:var(--text-muted); display:block; margin-top:2px; }
 .agenda-detail h3 { font-size:15px; margin-bottom:4px; letter-spacing:-0.01em; }
 .agenda-detail p { font-size:13px; color:var(--text-secondary); line-height:1.5; }
-.agenda-detail .session-desc { font-size:12px; color:var(--text-muted); margin-top:4px; font-style:italic; }
+.agenda-detail details { margin-top:6px; }
+.agenda-detail details summary {
+  font-size:11px; font-weight:600; color:var(--light-blue); cursor:pointer;
+  list-style:none; display:inline-flex; align-items:center; gap:4px;
+  user-select:none;
+}
+.agenda-detail details summary::-webkit-details-marker { display:none; }
+.agenda-detail details summary::after {
+  content:''; display:inline-block; width:0; height:0;
+  border-left:4px solid transparent; border-right:4px solid transparent;
+  border-top:5px solid var(--light-blue); transition:transform 0.2s;
+}
+.agenda-detail details[open] summary::after { transform:rotate(180deg); }
+.agenda-detail details .session-desc {
+  font-size:12px; color:var(--text-muted); margin-top:6px; line-height:1.5;
+  padding:8px 12px; background:rgba(0,104,190,0.04); border-radius:6px;
+  border-left:2px solid var(--light-blue); max-width:500px;
+}
 .agenda-break { opacity:0.4; }
 .agenda-evening { border-top:2px solid var(--teal); margin-top:16px; padding-top:20px; }
 
@@ -423,25 +440,25 @@ section { padding:100px 40px; }
 
 /* RESTAURANTS */
 #dining {
-  position:relative; background:var(--sand);
+  position:relative; background:#FFF8F2;
 }
 #dining::before {
   content:''; position:absolute; inset:0;
   background: url(images/charleston-street.jpg) center/cover no-repeat;
-  opacity:0.06;
+  opacity:0.04;
   pointer-events:none;
 }
 #dining::after {
   content:''; position:absolute; inset:0;
   background: url(images/accela-logo-blues-white.png) center/200px no-repeat;
-  opacity:0.04;
+  opacity:0.03;
   pointer-events:none;
 }
 #dining > .container { position:relative; z-index:1; }
 .rest-category { margin-bottom:56px; }
 .rest-category h2 {
   font-size:26px; color:var(--navy); margin-bottom:6px;
-  padding-bottom:12px; border-bottom:2px solid var(--light-blue);
+  padding-bottom:12px; border-bottom:2px solid #D4854A;
   display:inline-block;
 }
 .rest-category > p { font-size:14px; color:var(--text-secondary); margin-bottom:24px; line-height:1.5; }
@@ -746,9 +763,9 @@ footer a:hover { text-decoration:underline; }
     <div class="day-content" id="day2">
       <div class="agenda-item"><div class="agenda-time">7:00 &ndash; 8:00 AM<span class="dur">1 hr</span></div><div class="agenda-detail"><h3>Breakfast</h3></div></div>
       <div class="agenda-item"><div class="agenda-time">8:00 &ndash; 8:50 AM<span class="dur">50 min</span></div><div class="agenda-detail"><h3>Opening + RVP Updates</h3><p>Alex Newman + RVPs</p></div></div>
-      <div class="agenda-item"><div class="agenda-time">8:50 &ndash; 9:50 AM<span class="dur">1 hr</span></div><div class="agenda-detail"><h3>From Transactional to Strategic: How Accela Wins and Retains Government Clients</h3><p>Lisa Benjamin, Partner, Lexicon Strategies</p><p class="session-desc">Interactive workshop on building strategic government relationships and moving beyond transactional selling to become a trusted advisor.</p></div></div>
+      <div class="agenda-item"><div class="agenda-time">8:50 &ndash; 9:50 AM<span class="dur">1 hr</span></div><div class="agenda-detail"><h3>From Transactional to Strategic: How Accela Wins and Retains Government Clients</h3><p>Lisa Benjamin, Partner, Lexicon Strategies</p><details><summary>Session Details</summary><p class="session-desc">Interactive workshop on building strategic government relationships and moving beyond transactional selling to become a trusted advisor.</p></details></div></div>
       <div class="agenda-item agenda-break"><div class="agenda-time">9:50 &ndash; 10:05 AM<span class="dur">15 min</span></div><div class="agenda-detail"><h3>Break</h3></div></div>
-      <div class="agenda-item"><div class="agenda-time">10:05 &ndash; 10:35 AM<span class="dur">30 min</span></div><div class="agenda-detail"><h3>Customer Fireside Chat</h3><p>Benjamin Dunn, Dir. of Planning &amp; Dev., Polk County FL</p><p class="session-desc">Hear directly from a customer on their Accela journey &mdash; what&rsquo;s working, what they wish they knew, and advice for the sales team.</p></div></div>
+      <div class="agenda-item"><div class="agenda-time">10:05 &ndash; 10:35 AM<span class="dur">30 min</span></div><div class="agenda-detail"><h3>Customer Fireside Chat</h3><p>Benjamin Dunn, Dir. of Planning &amp; Dev., Polk County FL</p><details><summary>Session Details</summary><p class="session-desc">Hear directly from a customer on their Accela journey &mdash; what&rsquo;s working, what they wish they knew, and advice for the sales team.</p></details></div></div>
       <div class="agenda-item"><div class="agenda-time">10:35 AM &ndash; 12:05 PM<span class="dur">1 hr 30 min</span></div><div class="agenda-detail"><h3>Product Sessions</h3><p>Secure Pay &bull; EPH / AI</p></div></div>
       <div class="agenda-item agenda-break"><div class="agenda-time">12:05 &ndash; 1:05 PM<span class="dur">1 hr</span></div><div class="agenda-detail"><h3>Lunch</h3></div></div>
       <div class="agenda-item"><div class="agenda-time">1:05 &ndash; 2:50 PM<span class="dur">1 hr 45 min</span></div><div class="agenda-detail"><h3>Product Sessions (Continued)</h3><p>MAS &bull; Novotx v6</p></div></div>
@@ -756,7 +773,7 @@ footer a:hover { text-decoration:underline; }
       <div class="agenda-item agenda-break"><div class="agenda-time">3:20 &ndash; 3:35 PM<span class="dur">15 min</span></div><div class="agenda-detail"><h3>Break</h3></div></div>
       <div class="agenda-item"><div class="agenda-time">3:35 &ndash; 4:05 PM<span class="dur">30 min</span></div><div class="agenda-detail"><h3>BDR Overview</h3><p>Nick Gough</p></div></div>
       <div class="agenda-item"><div class="agenda-time">4:05 &ndash; 4:50 PM<span class="dur">45 min</span></div><div class="agenda-detail"><h3>RevOps &mdash; Sales Tools &amp; AI Roadmap</h3><p>Jason Jordan &amp; Team</p></div></div>
-      <div class="agenda-item"><div class="agenda-time">4:50 &ndash; 5:20 PM<span class="dur">30 min</span></div><div class="agenda-detail"><h3>Don&rsquo;t Miss, Don&rsquo;t Waste: AI-Powered Territory Planning with Pursuit</h3><p>Mike Vichich &amp; Laura Meister, Pursuit</p><p class="session-desc">Live demo using a real rep and real territory to show how Pursuit&rsquo;s AI identifies the accounts you should be working and the ones you&rsquo;re missing.</p></div></div>
+      <div class="agenda-item"><div class="agenda-time">4:50 &ndash; 5:20 PM<span class="dur">30 min</span></div><div class="agenda-detail"><h3>Don&rsquo;t Miss, Don&rsquo;t Waste: AI-Powered Territory Planning with Pursuit</h3><p>Mike Vichich &amp; Laura Meister, Pursuit</p><details><summary>Session Details</summary><p class="session-desc">Live demo using a real rep and real territory to show how Pursuit&rsquo;s AI identifies the accounts you should be working and the ones you&rsquo;re missing.</p></details></div></div>
       <div class="agenda-item"><div class="agenda-time">5:20 &ndash; 6:20 PM<span class="dur">1 hr</span></div><div class="agenda-detail"><h3>Territory Planning Breakout</h3><p>RVPs + Teams</p></div></div>
       <div class="agenda-item"><div class="agenda-time">6:20 &ndash; 6:30 PM<span class="dur">10 min</span></div><div class="agenda-detail"><h3>Kahoot + Day 2 Close</h3><p>Ryan Kirkendall / Alex Newman</p></div></div>
       <div class="agenda-item agenda-evening"><div class="agenda-time">7:00 &ndash; 9:00 PM<span class="dur">2 hrs</span></div><div class="agenda-detail"><h3>Team Dinners (Offsite)</h3><p>Team dinner at a local Charleston restaurant</p></div></div>
@@ -945,7 +962,7 @@ footer a:hover { text-decoration:underline; }
         <h3>July Weather</h3>
         <p>Charleston in late July is <strong>hot and humid</strong>. Expect highs around 90&deg;F with high humidity. Afternoon thunderstorms are common but usually pass quickly.</p>
         <div class="highlight">Highs ~90&deg;F &bull; Humid &bull; Pack light</div>
-        <a href="https://weather.com/weather/tenday/l/Charleston+SC" target="_blank" class="travel-link">10-Day Forecast &rarr;</a>
+        <a href="https://weather.com/us/south-carolina/city/charleston/today" target="_blank" class="travel-link">10-Day Forecast &rarr;</a>
         </div>
       </div>
     </div>
