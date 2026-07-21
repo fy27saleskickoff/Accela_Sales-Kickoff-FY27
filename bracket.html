@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SKO FY27 — The Accelerator Challenge</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:#0C2639;
+  color:#fff;
+  font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+  overflow:auto;
+}
+.bracket-page{
+  padding:12px 15px;
+  min-width:1480px;
+}
+header{
+  text-align:center;
+  margin-bottom:8px;
+}
+header h1{
+  font-size:20px;
+  letter-spacing:3px;
+  color:#5ce0ff;
+  font-weight:700;
+  margin-bottom:4px;
+}
+header .subtitle{
+  font-size:11px;
+  color:rgba(255,255,255,0.4);
+  letter-spacing:1px;
+}
+
+/* PLAY-IN SECTION */
+.playin-section{
+  margin-bottom:12px;
+  padding:10px 12px;
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(92,224,255,0.12);
+  border-radius:6px;
+}
+.playin-header{
+  text-align:center;
+  font-size:10px;
+  letter-spacing:2px;
+  color:rgba(255,215,0,0.6);
+  font-weight:700;
+  margin-bottom:8px;
+}
+.playin-grid{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  justify-content:center;
+}
+.playin-game{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:2px;
+  padding:6px 8px;
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:4px;
+  min-width:120px;
+}
+.playin-label{
+  font-size:7px;
+  letter-spacing:1.5px;
+  color:rgba(92,224,255,0.4);
+  font-weight:600;
+  text-transform:uppercase;
+  margin-bottom:2px;
+}
+.playin-vs{
+  font-size:8px;
+  color:rgba(255,255,255,0.25);
+  font-style:italic;
+}
+.playin-game .slot{
+  width:110px;
+  text-align:center;
+}
+
+/* MAIN BRACKET */
+.bracket-container{
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  gap:0;
+}
+.side{
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+.region-wrapper{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+}
+.region-name{
+  font-size:10px;
+  letter-spacing:2px;
+  color:rgba(92,224,255,0.5);
+  text-align:center;
+  margin-bottom:3px;
+  font-weight:600;
+}
+.region{
+  display:flex;
+  flex:1;
+  align-items:stretch;
+  gap:20px;
+}
+.region.ltr{flex-direction:row}
+.region.rtl{flex-direction:row-reverse}
+.round{
+  display:flex;
+  flex-direction:column;
+  position:relative;
+}
+.game{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  position:relative;
+  min-height:0;
+}
+.ltr .game{align-items:flex-start}
+.rtl .game{align-items:flex-end}
+
+.slot{
+  width:105px;
+  height:18px;
+  padding:1px 4px;
+  font-size:10px;
+  line-height:16px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.12);
+  cursor:default;
+  transition:all 0.15s;
+  color:#dde5ed;
+}
+.slot.empty{
+  background:transparent;
+  border-color:rgba(255,255,255,0.06);
+  cursor:default;
+}
+.slot.playin-slot{
+  border-color:rgba(255,215,0,0.25);
+  background:rgba(255,215,0,0.04);
+  color:rgba(255,215,0,0.4);
+  font-style:italic;
+  font-size:8px;
+  cursor:default;
+}
+.slot.playin-slot.filled{
+  color:#dde5ed;
+  font-style:normal;
+  font-size:10px;
+  cursor:default;
+  border-color:rgba(255,255,255,0.12);
+  background:rgba(255,255,255,0.05);
+}
+.slot.winner{
+  background:rgba(0,180,216,0.25);
+  color:#5ce0ff;
+  font-weight:600;
+  border-color:rgba(0,180,216,0.5);
+}
+.slot.loser{
+  text-decoration:line-through;
+  color:rgba(255,255,255,0.2);
+  background:rgba(255,255,255,0.015);
+}
+
+/* BRACKET LINES — LTR */
+.ltr .round:not(.last-round) .game:nth-child(odd)::after{
+  content:'';position:absolute;
+  right:-11px;top:50%;bottom:0;width:10px;
+  border-top:1px solid rgba(92,224,255,0.2);
+  border-right:1px solid rgba(92,224,255,0.2);
+  border-bottom:none;border-left:none;
+  pointer-events:none;
+}
+.ltr .round:not(.last-round) .game:nth-child(even)::after{
+  content:'';position:absolute;
+  right:-11px;top:0;bottom:50%;width:10px;
+  border-bottom:1px solid rgba(92,224,255,0.2);
+  border-right:1px solid rgba(92,224,255,0.2);
+  border-top:none;border-left:none;
+  pointer-events:none;
+}
+.ltr .round:not(:first-child) .game::before{
+  content:'';position:absolute;
+  left:-10px;top:50%;width:10px;height:1px;
+  background:rgba(92,224,255,0.2);
+  pointer-events:none;
+}
+
+/* BRACKET LINES — RTL */
+.rtl .round:not(.last-round) .game:nth-child(odd)::after{
+  content:'';position:absolute;
+  left:-11px;right:auto;top:50%;bottom:0;width:10px;
+  border-top:1px solid rgba(92,224,255,0.2);
+  border-left:1px solid rgba(92,224,255,0.2);
+  border-right:none;border-bottom:none;
+  pointer-events:none;
+}
+.rtl .round:not(.last-round) .game:nth-child(even)::after{
+  content:'';position:absolute;
+  left:-11px;right:auto;top:0;bottom:50%;width:10px;
+  border-bottom:1px solid rgba(92,224,255,0.2);
+  border-left:1px solid rgba(92,224,255,0.2);
+  border-right:none;border-top:none;
+  pointer-events:none;
+}
+.rtl .round:not(:first-child) .game::before{
+  content:'';position:absolute;
+  right:-10px;left:auto;top:50%;width:10px;height:1px;
+  background:rgba(92,224,255,0.2);
+  pointer-events:none;
+}
+
+/* CENTER */
+.center-section{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  padding:0 12px;
+  min-width:170px;
+  gap:8px;
+}
+.logo-container{
+  width:200px;
+  margin:8px 0;
+}
+.logo-container svg{
+  width:100%;
+  height:auto;
+}
+.sf-game,.final-area{
+  text-align:center;
+}
+.sf-game h4,.final-area h4{
+  font-size:8px;
+  letter-spacing:2px;
+  color:rgba(92,224,255,0.45);
+  margin-bottom:3px;
+  font-weight:600;
+}
+.center-section .slot{
+  width:135px;
+  height:21px;
+  font-size:10.5px;
+  line-height:19px;
+  text-align:center;
+}
+.champion-display{
+  text-align:center;
+  margin:4px 0;
+}
+.champion-label{
+  font-size:9px;
+  letter-spacing:3px;
+  color:#FFD700;
+  font-weight:700;
+  margin-bottom:3px;
+}
+.champion-slot{
+  width:150px!important;
+  height:26px!important;
+  font-size:12px!important;
+  line-height:24px!important;
+  border-color:rgba(255,215,0,0.4)!important;
+  background:rgba(255,215,0,0.08)!important;
+  text-align:center;
+}
+.champion-slot.winner{
+  background:rgba(255,215,0,0.2)!important;
+  color:#FFD700!important;
+  font-weight:700;
+  border-color:rgba(255,215,0,0.6)!important;
+}
+</style>
+</head>
+<body>
+<div class="bracket-page">
+<header>
+  <h1>THE ACCELERATOR CHALLENGE</h1>
+  <div class="subtitle">SKO FY27 &bull; 73 Competitors &bull; Single Elimination</div>
+</header>
+
+<div class="playin-section">
+  <div class="playin-header">PLAY-IN ROUND &mdash; 9 MATCHUPS</div>
+  <div class="playin-grid">
+<div class="playin-game">
+  <div class="playin-label">Lowcountry</div>
+  <div class="slot" data-key="pi_0_s0">Garrick Greenhalgh</div>
+  <div class="playin-vs">vs</div>
+  <div class="slot" data-key="pi_0_s1">Ryan Aughtry</div>
+</div>
+<div class="playin-game">
+  <div class="playin-label">Lowcountry</div>
+  <div class="slot" data-key="pi_1_s0">Eddie Hunt</div>
+  <div class="playin-vs">vs</div>
+  <div class="slot" data-key="pi_1_s1">Ben Landis</div>
+</div>
+<div class="playin-game">
+  <div class="playin-label">Palmetto</div>
+  <div class="slot" data-key="pi_2_s0">Justin Dyszelski</div>
+  <div class="playin-vs">vs</div>
+  <div class="slot" data-key="pi_2_s1">Alex Kostopoulos</div>
+</div>
+<div class="playin-game">
+  <div class="playin-label">Palmetto</div>
+  <div class="slot" data-key="pi_3_s0">Rebekah Anderson</div>
+  <div class="playin-vs">vs</div>
+  <div class="slot" data-key="pi_3_s1">Ryan Kirkendall</div>
+</div>
+<div class="playin-game">
+  <div class="playin-label">Harbor</div>
+  <div class="slot" data-key="pi_4_s0">Nick Gough</div>
+  <div class="playin-vs">vs</div>
+  <div class="slot" data-key="pi_4_s1">Robin Moulton</div>
+</div>
+<div class="playin-game">
+  <div class="playin-label">Harbor</div>
+  <div class="slot" data-key="pi_5_s0">Linh Vuong</div>
+  <div class="playin-vs">vs</div>
+  <div class="slot" data-key="pi_5_s1">Mike Schwab</div>
+</div>
+<div class="playin-game">
+  <div class="playin-label">Tidewater</div>
+  <div class="slot" data-key="pi_6_s0">Laura Avent</div>
+  <div class="playin-vs">vs</div>
+  <div class="slot" data-key="pi_6_s1">Austin Beckstead</div>
+</div>
+<div class="playin-game">
+  <div class="playin-label">Tidewater</div>
+  <div class="slot" data-key="pi_7_s0">Trisha Fittipaldi</div>
+  <div class="playin-vs">vs</div>
+  <div class="slot" data-key="pi_7_s1">Oren Mishael</div>
+</div>
+<div class="playin-game">
+  <div class="playin-label">Tidewater</div>
+  <div class="slot" data-key="pi_8_s0">Mike Ennis</div>
+  <div class="playin-vs">vs</div>
+  <div class="slot" data-key="pi_8_s1">Nicolay Lameijer</div>
+</div>
+
+  </div>
+</div>
+
+<div class="bracket-container">
+  <div class="side">
+    <div class="region-wrapper">
+      <div class="region-name">LOWCOUNTRY</div>
+<div class="region ltr">
+<div class="round">
+<div class="game">
+  <div class="slot" data-key="r0_rd0_m0_s0">Matthew Hopkins</div>
+  <div class="slot" data-key="r0_rd0_m0_s1">Dalton Gilbert</div>
+</div>
+<div class="game">
+  <div class="slot" data-key="r0_rd0_m1_s0">Bryanna Vandenberg</div>
+  <div class="slot" data-key="r0_rd0_m1_s1">Carl Figueiredo</div>
+</div>
+<div class="game">
+  <div class="slot playin-slot" data-playin="0" data-key="r0_rd0_m2_s0"></div>
+  <div class="slot" data-key="r0_rd0_m2_s1">Tyler Stanchina</div>
+</div>
+<div class="game">
+  <div class="slot" data-key="r0_rd0_m3_s0">Arllis Coates</div>
+  <div class="slot" data-key="r0_rd0_m3_s1">Joshua Hamaker</div>
+</div>
+<div class="game">
+  <div class="slot" data-key="r0_rd0_m4_s0">Angela Holden</div>
+  <div class="slot" data-key="r0_rd0_m4_s1">Jeffrey Reese</div>
+</div>
+<div class="game">
+  <div class="slot" data-key="r0_rd0_m5_s0">Trevor Milton</div>
+  <div class="slot" data-key="r0_rd0_m5_s1">David Madore</div>
+</div>
+<div class="game">
+  <div class="slot playin-slot" data-playin="1" data-key="r0_rd0_m6_s0"></div>
+  <div class="slot" data-key="r0_rd0_m6_s1">Jessica Youngman</div>
+</div>
+<div class="game">
+  <div class="slot" data-key="r0_rd0_m7_s0">Ryan Chavez</div>
+  <div class="slot" data-key="r0_rd0_m7_s1">Danielle Snell</div>
+</div>
+</div>
+<div class="round">
+<div class="game">
+  <div class="slot empty" data-key="r0_rd1_m0_s0"></div>
+  <div class="slot empty" data-key="r0_rd1_m0_s1"></div>
+</div>
+<div class="game">
+  <div class="slot empty" data-key="r0_rd1_m1_s0"></div>
+  <div class="slot empty" data-key="r0_rd1_m1_s1"></div>
+</div>
+<div class="game">
+  <div class="slot empty" data-key="r0_rd1_m2_s0"></div>
+  <div class="slot empty" data-key="r0_rd1_m2_s1"></div>
+</div>
+<div class="game">
+  <div class="slot empty" data-key="r0_rd1_m3_s0"></div>
+  <div class="slot empty" data-key="r0_rd1_m3_s1"></div>
+</div>
+</div>
+<div class="round">
+<div class="game">
+  <div class="slot empty" data-key="r0_rd2_m0_s0"></div>
+  <div class="slot empty" data-key="r0_rd2_m0_s1"></div>
+</div>
+<div class="game">
+  <div class="slot empty" data-key="r0_rd2_m1_s0"></div>
+  <div class="slot empty" data-key="r0_rd2_m1_s1"></div>
+</div>
+</div>
+<div class="round last-round">
+<div class="game">
+  <div class="slot empty" data-key="r0_rd3_m0_s0"></div>
+  <div class="slot empty" data-key="r0_rd3_m0_s1"></div>
+</div>
+</div>
+</div>
+
+    </div>
+    <div class="region-wrapper">
+      <div class="region-name">PALMETTO</div>
+<div class="region ltr">
+<div class="round">
+<div class="game">
+  <div class="slot" data-key="r1_rd0_m0_s0">Rob Mago</div>
+  <div class="slot" data-key="r1_rd0_m0_s1">Anja Brady</div>
+</div>
+<div class="game">
+  <div class="slot" data-key="r1_rd0_m1_s0">Jeffrey Taylor</div>
+  <div class="slot" data-key="r1_rd0_m1_s1">Caitlin Carter</div>
+</div>
+<div class="game">
+  <div class="slot playin-slot" data-playin="2" data-key="r1_rd0_m2_s0"></div>
+  <div class="slot" data-key="r1_rd0_m2_s1">Neale Wooten</div>
+</div>
+<div class="game">
+  <div class="slot" data-key="r1_rd0_m3_s0">Griffan Kerkmann</div>
+  <div class="slot" data-key="r1_rd0_m3_s1">James Burns</div>
+</div>
+<div class="game">
+  <div class="slot" data-key="r1_rd0_m4_s0">Regan Harker</div>
+  <div class="slot" data-key="r1_rd0_m4_s1">Patrick Alspaugh</div>
+</div>
+<div class="game">
+  <div class="slot" data-key="r1_rd0_m5_s0">Tammy Cohen</div>
+  <div class="slot" data-key="r1_rd0_m5_s1">Roy Boyle</div>
+</div>
+<div class="game">
+  <div class="slot playin-slot" data-playin="3" data-key="r1_rd0_m6_s0"></div>
+  <div class="slot" data-key="r1_rd0_m6_s1">Bill Gardner</div>
+</div>
+<div class="game">
+  <div class="slot" data-key="r1_rd0_m7_s0">Will King</div>
+  <div class="slot" data-key="r1_rd0_m7_s1">Animesh Irkulla</div>
+</div>
+</div>
+<div class="round">
+<div class="game">
+  <div class="slot empty" data-key="r1_rd1_m0_s0"></div>
+  <div class="slot empty" data-key="r1_rd1_m0_s1"></div>
+</div>
+<div class="game">
+  <div class="slot empty" data-key="r1_rd1_m1_s0"></div>
+  <div class="slot empty" data-key="r1_rd1_m1_s1"></div>
+</div>
+<div class="game">
+  <div class="slot empty" data-key="r1_rd1_m2_s0"></div>
+  <div class="slot empty" data-key="r1_rd1_m2_s1"></div>
+</div>
+<div class="game">
+  <div class="slot empty" data-key="r1_rd1_m3_s0"></div>
+  <div class="slot empty" data-key="r1_rd1_m3_s1"></div>
+</div>
+</div>
+<div class="round">
+<div class="game">
+  <div class="slot empty" data-key="r1_rd2_m0_s0"></div>
+  <div class="slot empty" data-key="r1_rd2_m0_s1"></div>
+</div>
+<div class="game">
+  <div class="slot empty" data-key="r1_rd2_m1_s0"></div>
+  <div class="slot empty" data-key="r1_rd2_m1_s1"></div>
+</div>
+</div>
+<div class="round last-round">
+<div class="game">
+  <div class="slot empty" data-key="r1_rd3_m0_s0"></div>
+  <div class="slot empty" data-key="r1_rd3_m0_s1"></div>
+</div>
+</div>
+</div>
+
+    </div>
+  </div>
+
+  <div class="center-section">
+    <div class="sf-game">
+      <h4>SEMI-FINAL 1</h4>
+      <div class="slot empty" data-key="sf_0"></div>
+      <div class="slot empty" data-key="sf_1"></div>
+    </div>
+    <div class="final-area">
+      <h4>CHAMPIONSHIP</h4>
+      <div class="slot empty" data-key="f_0"></div>
+      <div class="slot empty" data-key="f_1"></div>
+    </div>
+    <div class="champion-display">
+      <div class="champion-label">CHAMPION</div>
+      <div class="slot champion-slot empty" data-key="champ"></div>
+    </div>
+    <div class="logo-container">
+      <?xml version="1.0" encoding="UTF-8"?><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 417.49 158.28"><defs><style>.cls-1{fill:#fff;}.cls-2{fill:#0068be;}.cls-3{fill:#00aff1;}.cls-4{fill:#2cace3;}</style></defs><path class="cls-1" d="M2.11,151.72v-20.38h7.41c1.37,0,2.58.25,3.62.75,1.05.5,1.87,1.23,2.45,2.19.58.96.88,2.1.88,3.43s-.3,2.44-.89,3.39c-.59.95-1.41,1.68-2.45,2.19-1.04.51-2.24.77-3.61.77h-4.19v7.66h-3.23ZM5.33,141.19h4.27c.73,0,1.37-.15,1.92-.44.55-.29.97-.7,1.27-1.22s.45-1.13.45-1.82-.15-1.33-.45-1.85-.72-.93-1.27-1.22c-.55-.29-1.19-.44-1.92-.44h-4.27v6.98Z"/><path class="cls-1" d="M26.07,152.05c-1.44,0-2.75-.34-3.91-1.01s-2.1-1.6-2.79-2.76c-.69-1.17-1.04-2.49-1.04-3.97s.34-2.82,1.03-3.98,1.61-2.07,2.78-2.74,2.48-1,3.94-1,2.77.33,3.93,1,2.08,1.58,2.76,2.74c.68,1.16,1.03,2.49,1.03,3.98s-.35,2.83-1.04,3.99c-.69,1.17-1.62,2.08-2.79,2.75s-2.46,1-3.88,1ZM26.07,149.17c.86,0,1.62-.21,2.3-.63.67-.42,1.21-1,1.6-1.74.39-.74.59-1.57.59-2.5s-.2-1.75-.59-2.48-.93-1.29-1.6-1.72-1.44-.64-2.3-.64-1.63.21-2.31.64-1.22,1-1.61,1.72-.59,1.55-.59,2.48.2,1.76.59,2.5c.39.74.93,1.32,1.61,1.74.68.42,1.45.63,2.31.63Z"/><path class="cls-1" d="M40.11,151.72l-5.09-14.8h3.28l3.88,11.79h-1.15l3.97-11.79h2.82l3.94,11.79h-1.15l3.91-11.79h3.28l-5.12,14.8h-2.79l-3.99-12.04h1.01l-3.99,12.04h-2.82Z"/><path class="cls-1" d="M66.56,152.05c-1.48,0-2.78-.34-3.91-1.03-1.13-.68-2.02-1.61-2.65-2.79-.64-1.18-.96-2.49-.96-3.95s.32-2.82.96-3.97c.64-1.15,1.51-2.06,2.61-2.72s2.34-1,3.71-1c1.13,0,2.13.19,3.01.58.88.38,1.61.91,2.22,1.57.6.67,1.06,1.43,1.38,2.29s.48,1.77.48,2.74c0,.24,0,.48-.03.74-.02.26-.05.49-.11.71h-11.79v-2.46h10.01l-1.45,1.12c.16-.89.1-1.69-.19-2.39-.29-.7-.75-1.26-1.37-1.67s-1.34-.62-2.16-.62-1.52.21-2.16.62c-.64.41-1.13,1-1.48,1.76-.35.77-.48,1.68-.41,2.74-.09,1,.05,1.88.42,2.63s.9,1.33,1.59,1.75c.68.42,1.45.63,2.31.63.91,0,1.68-.2,2.3-.6.62-.4,1.12-.92,1.5-1.56l2.52,1.26c-.29.69-.74,1.31-1.35,1.86-.61.55-1.34.98-2.19,1.3-.85.32-1.78.48-2.8.48Z"/><path class="cls-1" d="M76.41,151.72v-14.8h2.95v3.01l-.27-.44c.33-.99.86-1.69,1.59-2.12s1.6-.64,2.63-.64h.9v2.82h-1.29c-1.02,0-1.85.32-2.48.96-.63.64-.94,1.53-.94,2.68v8.54h-3.09Z"/><path class="cls-1" d="M93.23,152.05c-1.48,0-2.78-.34-3.91-1.03-1.13-.68-2.02-1.61-2.65-2.79-.64-1.18-.96-2.49-.96-3.95s.32-2.82.96-3.97c.64-1.15,1.51-2.06,2.61-2.72s2.34-1,3.71-1c1.13,0,2.13.19,3.01.58.88.38,1.61.91,2.22,1.57.6.67,1.06,1.43,1.38,2.29s.48,1.77.48,2.74c0,.24,0,.48-.03.74-.02.26-.05.49-.11.71h-11.79v-2.46h10.01l-1.45,1.12c.16-.89.1-1.69-.19-2.39-.29-.7-.75-1.26-1.37-1.67s-1.34-.62-2.16-.62-1.52.21-2.16.62c-.64.41-1.13,1-1.48,1.76-.35.77-.48,1.68-.41,2.74-.09,1,.05,1.88.42,2.63s.9,1.33,1.59,1.75c.68.42,1.45.63,2.31.63.91,0,1.68-.2,2.3-.6.62-.4,1.12-.92,1.5-1.56l2.52,1.26c-.29.69-.74,1.31-1.35,1.86-.61.55-1.34.98-2.19,1.3-.85.32-1.78.48-2.8.48Z"/><path class="cls-1" d="M109.89,152.05c-1.41,0-2.67-.34-3.79-1.03-1.12-.68-2.01-1.61-2.65-2.78-.65-1.17-.97-2.48-.97-3.94s.32-2.77.97-3.94c.65-1.17,1.53-2.09,2.65-2.76,1.12-.67,2.38-1.01,3.79-1.01,1.17,0,2.21.24,3.13.71s1.65,1.13,2.17,1.97l-.49.71v-8.97h3.09v20.71h-2.96v-3.01l.36.58c-.51.89-1.24,1.58-2.17,2.05-.94.47-1.98.71-3.13.71ZM110.22,149.17c.86,0,1.62-.21,2.3-.63.67-.42,1.21-1,1.6-1.74.39-.74.59-1.57.59-2.5s-.2-1.74-.59-2.48c-.39-.74-.93-1.32-1.6-1.74-.67-.42-1.44-.63-2.3-.63s-1.63.21-2.33.64c-.69.43-1.23,1-1.61,1.72s-.57,1.55-.57,2.48.19,1.76.57,2.5c.38.74.92,1.32,1.6,1.74.68.42,1.46.63,2.34.63Z"/><path class="cls-1" d="M134.11,152.05c-1.15,0-2.19-.24-3.13-.71-.94-.47-1.66-1.16-2.17-2.05l.36-.58v3.01h-2.95v-20.71h3.09v8.97l-.49-.71c.55-.84,1.28-1.5,2.19-1.97s1.95-.71,3.12-.71c1.4,0,2.67.34,3.79,1.01,1.12.67,2.01,1.6,2.65,2.76.65,1.17.97,2.48.97,3.94s-.32,2.77-.97,3.94c-.65,1.17-1.53,2.09-2.64,2.78-1.11.68-2.38,1.03-3.8,1.03ZM133.78,149.17c.88,0,1.65-.21,2.34-.63.68-.42,1.22-1,1.6-1.74.38-.74.57-1.57.57-2.5s-.19-1.75-.57-2.48c-.38-.72-.92-1.29-1.6-1.72-.68-.43-1.46-.64-2.34-.64s-1.6.21-2.29.63c-.68.42-1.22,1-1.61,1.74-.39.74-.59,1.56-.59,2.48s.2,1.76.59,2.5c.39.74.93,1.32,1.61,1.74.68.42,1.45.63,2.29.63Z"/><path class="cls-1" d="M145.57,157.74c-.36,0-.72-.03-1.08-.1-.36-.06-.68-.16-.97-.29v-2.65c.22.05.48.1.79.15.31.04.61.07.9.07.86,0,1.49-.19,1.9-.56s.78-.94,1.11-1.71l.98-2.24-.05,2.63-6.4-16.11h3.31l4.73,12.34h-1.12l4.71-12.34h3.34l-6.54,16.42c-.35.88-.78,1.65-1.3,2.31-.52.67-1.13,1.18-1.83,1.55-.7.36-1.53.55-2.48.55Z"/><path class="cls-1" d="M163.1,151.72l7.17-20.38h3.99l7.17,20.38h-3.47l-1.53-4.57h-8.29l-1.59,4.57h-3.45ZM169.07,144.28h6.38l-3.61-10.67h.9l-3.67,10.67Z"/><path class="cls-1" d="M183.84,151.72v-20.38h3.23v20.38h-3.23Z"/><path class="cls-1" d="M191.77,155.77v-1.53c.6-.15,1.07-.42,1.39-.83s.53-.97.6-1.68h-1.45v-3.56h3.15v2.33c0,1.46-.31,2.64-.93,3.53s-1.54,1.48-2.76,1.75Z"/><path class="cls-1" d="M205.04,151.72v-20.38h6.68c2.12,0,3.95.43,5.51,1.29,1.56.86,2.77,2.05,3.62,3.57.86,1.52,1.29,3.3,1.29,5.32s-.43,3.78-1.29,5.32-2.06,2.74-3.62,3.6c-1.56.86-3.4,1.29-5.51,1.29h-6.68ZM208.27,148.85h3.5c1.44,0,2.69-.3,3.75-.9,1.06-.6,1.88-1.45,2.46-2.54.58-1.09.88-2.39.88-3.88s-.29-2.79-.88-3.87c-.58-1.08-1.41-1.93-2.46-2.53-1.06-.6-2.31-.9-3.75-.9h-3.5v14.64Z"/><path class="cls-1" d="M224.98,151.72v-14.8h2.95v3.01l-.27-.44c.33-.99.86-1.69,1.59-2.12s1.6-.64,2.63-.64h.9v2.82h-1.29c-1.02,0-1.85.32-2.48.96-.63.64-.94,1.53-.94,2.68v8.54h-3.09Z"/><path class="cls-1" d="M234.89,134.89v-3.56h3.09v3.56h-3.09ZM234.89,151.72v-14.8h3.09v14.8h-3.09Z"/><path class="cls-1" d="M245.88,151.72l-5.8-14.8h3.37l4.46,12.07h-1.23l4.46-12.07h3.39l-5.83,14.8h-2.82Z"/><path class="cls-1" d="M263.28,152.05c-1.48,0-2.78-.34-3.91-1.03-1.13-.68-2.01-1.61-2.65-2.79-.64-1.18-.96-2.49-.96-3.95s.32-2.82.96-3.97c.64-1.15,1.51-2.06,2.61-2.72s2.34-1,3.71-1c1.13,0,2.13.19,3.01.58.88.38,1.61.91,2.22,1.57.6.67,1.06,1.43,1.38,2.29.32.86.48,1.77.48,2.74,0,.24,0,.48-.03.74-.02.26-.05.49-.11.71h-11.79v-2.46h10.01l-1.45,1.12c.16-.89.1-1.69-.19-2.39s-.75-1.26-1.37-1.67-1.34-.62-2.16-.62-1.52.21-2.16.62-1.13,1-1.48,1.76c-.35.77-.48,1.68-.41,2.74-.09,1,.05,1.88.42,2.63s.9,1.33,1.59,1.75c.68.42,1.45.63,2.31.63.91,0,1.68-.2,2.3-.6.62-.4,1.12-.92,1.5-1.56l2.52,1.26c-.29.69-.74,1.31-1.35,1.86-.61.55-1.34.98-2.19,1.3-.85.32-1.78.48-2.8.48Z"/><path class="cls-1" d="M273.13,151.72v-14.8h2.95v2.9l-.36-.38c.37-.93.95-1.64,1.75-2.12s1.73-.73,2.79-.73,2.06.24,2.9.71,1.5,1.13,1.97,1.97c.47.84.71,1.81.71,2.9v9.55h-3.09v-8.73c0-.73-.14-1.35-.41-1.87-.27-.52-.66-.93-1.15-1.22s-1.06-.44-1.7-.44-1.21.15-1.71.44-.89.7-1.16,1.22c-.27.52-.41,1.14-.41,1.87v8.73h-3.09Z"/><path class="cls-1" d="M301.86,152.05c-1.15,0-2.19-.24-3.13-.71-.94-.47-1.66-1.16-2.17-2.05l.36-.58v3.01h-2.95v-20.71h3.09v8.97l-.49-.71c.55-.84,1.28-1.5,2.19-1.97s1.95-.71,3.12-.71c1.4,0,2.67.34,3.79,1.01,1.12.67,2.01,1.6,2.65,2.76.65,1.17.97,2.48.97,3.94s-.32,2.77-.97,3.94c-.65,1.17-1.53,2.09-2.64,2.78-1.11.68-2.38,1.03-3.8,1.03ZM301.53,149.17c.88,0,1.66-.21,2.34-.63.68-.42,1.22-1,1.6-1.74.38-.74.57-1.57.57-2.5s-.19-1.75-.57-2.48-.92-1.29-1.6-1.72-1.46-.64-2.34-.64-1.6.21-2.28.63c-.68.42-1.22,1-1.61,1.74-.39.74-.59,1.56-.59,2.48s.2,1.76.59,2.5c.39.74.93,1.32,1.61,1.74.68.42,1.45.63,2.28.63Z"/><path class="cls-1" d="M313.32,157.74c-.37,0-.73-.03-1.08-.1-.36-.06-.68-.16-.97-.29v-2.65c.22.05.48.1.79.15.31.04.61.07.9.07.86,0,1.49-.19,1.9-.56.41-.37.78-.94,1.11-1.71l.98-2.24-.05,2.63-6.4-16.11h3.31l4.73,12.34h-1.12l4.71-12.34h3.34l-6.54,16.42c-.35.88-.78,1.65-1.3,2.31s-1.13,1.18-1.83,1.55c-.7.36-1.53.55-2.48.55Z"/><path class="cls-1" d="M337.8,151.72v-9.17l-6.95-11.22h3.64l5.58,9.05h-1.29l5.53-9.05h3.67l-6.95,11.19v9.19h-3.23Z"/><path class="cls-1" d="M354.63,152.05c-1.44,0-2.75-.34-3.91-1.01-1.17-.67-2.1-1.6-2.79-2.76-.69-1.17-1.04-2.49-1.04-3.97s.34-2.82,1.03-3.98,1.61-2.07,2.78-2.74c1.17-.67,2.48-1,3.94-1s2.77.33,3.93,1c1.16.67,2.08,1.58,2.76,2.74s1.03,2.49,1.03,3.98-.35,2.83-1.04,3.99c-.69,1.17-1.62,2.08-2.79,2.75-1.17.67-2.46,1-3.88,1ZM354.63,149.17c.86,0,1.62-.21,2.3-.63.67-.42,1.21-1,1.6-1.74.39-.74.59-1.57.59-2.5s-.2-1.75-.59-2.48c-.39-.72-.93-1.29-1.6-1.72-.67-.43-1.44-.64-2.3-.64s-1.63.21-2.31.64c-.68.43-1.22,1-1.61,1.72-.39.72-.59,1.55-.59,2.48s.2,1.76.59,2.5c.39.74.93,1.32,1.61,1.74.68.42,1.45.63,2.31.63Z"/><path class="cls-1" d="M370.63,152.05c-1.11,0-2.09-.25-2.94-.75-.85-.5-1.5-1.2-1.96-2.11-.46-.9-.68-1.95-.68-3.13v-9.14h3.09v8.86c0,.67.14,1.27.41,1.78.27.51.66.91,1.15,1.19.49.28,1.06.42,1.7.42s1.23-.15,1.72-.44c.49-.29.88-.7,1.15-1.23.27-.53.41-1.15.41-1.86v-8.73h3.09v14.8h-2.95v-2.9l.36.38c-.35.93-.93,1.64-1.74,2.12-.81.48-1.75.72-2.8.72Z"/><path class="cls-1" d="M2.24,55.65h42.91v8.03H11.01v14.56l24.28.04v7.79H11.01v26.59H2.24v-57.01Z"/><path class="cls-1" d="M72.02,88.1l-24.88-32.46h10.54l18.76,24.24,18.73-24.24h10.53l-24.87,32.46v24.51h-8.81v-24.51Z"/><path class="cls-1" d="M127.43,87.17c5.49-7.23,7.86-11.23,7.69-15.59-.17-5.31-4.1-8.83-9.58-8.67-4.18.14-8.38,2.29-12.57,6.41l-3.62-7.04c4.69-4.6,10.84-7.46,17.13-7.46,10.24,0,17.3,6.46,17.3,16.49,0,6.07-3.14,11.62-11.1,22.11l-9.31,11.49h22.26v7.75h-37.7c6.24-8.05,13.74-17.99,19.51-25.49Z"/><path class="cls-1" d="M176.05,63.54h-23.96v-7.9h35.96l-23,56.98h-9.12l20.12-49.09Z"/><path class="cls-1" d="M239.52,113.35c-9.26.03-18.87-2.58-25.51-6.77l4.75-6.86c6.09,3.65,13.87,5.71,21.14,5.65,7.96-.07,13.35-3.09,13.46-8.29.11-4.78-3.1-6.56-11.46-8.48l-7.53-1.72c-12.2-2.77-17.84-7.86-17.89-16.25-.05-9.26,9.27-15.57,21.85-15.64,8.29-.05,16.34,2.46,22.24,6.1l-4.47,6.85c-5.03-3.08-10.8-5.02-16.96-4.98-7.84.08-13.3,2.86-13.25,7.93.04,4.41,3.57,6.59,11.06,8.3l8.04,1.81c12.12,2.73,17.44,7.37,17.48,16.06.05,9.68-9.32,16.25-22.94,16.3h0Z"/><path class="cls-1" d="M309.4,112.66l-30.55-29.59v29.59h-8.82v-57.01h8.82v23.78l25.82-23.78h12.38l-28.52,25.62,33.1,31.39h-12.23Z"/><path class="cls-4" d="M371.34,41.78c0,11.2,9.08,20.28,20.28,20.28-11.2,0-20.28,9.08-20.28,20.28,0-11.2-9.08-20.28-20.28-20.28,11.2,0,20.28-9.08,20.28-20.28Z"/><path class="cls-4" d="M371.34,83.16c-.45,0-.82-.37-.82-.82,0-10.73-8.73-19.46-19.46-19.46-.45,0-.82-.37-.82-.82s.37-.82.82-.82c10.73,0,19.46-8.73,19.46-19.46,0-.45.37-.82.82-.82s.82.37.82.82c0,10.73,8.73,19.46,19.46,19.46.45,0,.82.37.82.82s-.37.82-.82.82c-10.73,0-19.46,8.73-19.46,19.46,0,.45-.37.82-.82.82ZM356.88,62.06c6.96,2,12.46,7.5,14.46,14.46,2-6.96,7.5-12.46,14.46-14.46-6.96-2-12.46-7.5-14.46-14.46-2,6.96-7.5,12.46-14.46,14.46Z"/><path class="cls-4" d="M399.77,25.73c0,9.33,7.57,16.9,16.9,16.9-9.33,0-16.9,7.57-16.9,16.9,0-9.33-7.57-16.9-16.9-16.9,9.33,0,16.9-7.57,16.9-16.9Z"/><path class="cls-4" d="M399.77,60.34c-.45,0-.82-.37-.82-.82,0-8.87-7.21-16.08-16.08-16.08-.45,0-.82-.37-.82-.82s.37-.82.82-.82c8.87,0,16.08-7.21,16.08-16.08,0-.45.37-.82.82-.82s.82.37.82.82c0,8.87,7.21,16.08,16.08,16.08.45,0,.82.37.82.82s-.37.82-.82.82c-8.87,0-16.08,7.21-16.08,16.08,0,.45-.37.82-.82.82ZM388.19,42.63c5.49,1.73,9.84,6.08,11.58,11.58,1.73-5.49,6.08-9.84,11.58-11.58-5.49-1.73-9.84-6.08-11.58-11.58-1.73,5.49-6.08,9.84-11.58,11.58Z"/><path class="cls-4" d="M395.62,70.39c0,5.6,4.54,10.14,10.14,10.14-5.6,0-10.14,4.54-10.14,10.14,0-5.6-4.54-10.14-10.14-10.14,5.6,0,10.14-4.54,10.14-10.14Z"/><path class="cls-4" d="M395.62,91.49c-.45,0-.82-.37-.82-.82,0-5.14-4.18-9.32-9.32-9.32-.45,0-.82-.37-.82-.82s.37-.82.82-.82c5.14,0,9.32-4.18,9.32-9.32,0-.45.37-.82.82-.82s.82.37.82.82c0,5.14,4.18,9.32,9.32,9.32.45,0,.82.37.82.82s-.37.82-.82.82c-5.14,0-9.32,4.18-9.32,9.32,0,.45-.37.82-.82.82ZM389.63,80.53c2.71,1.11,4.87,3.28,5.99,5.99,1.11-2.71,3.28-4.88,5.99-5.99-2.71-1.11-4.88-3.28-5.99-5.99-1.11,2.71-3.28,4.88-5.99,5.99Z"/><path class="cls-1" d="M348.44,113.93c-17.13,0-30.56-13.08-30.56-29.78,0-13.47,8.93-24.88,22.1-28.54.76-.21,5.04-1.07,8.15-1.02l-4.28,8.6c-.58.11-1.15.25-1.71.4-9.5,2.63-15.57,10.95-15.57,20.61,0,12,9.43,21.34,21.86,21.34,9.72,0,17.76-5.72,20.68-14.58.25-.75.48-1.8.64-2.58l9.12-1.77c-.11,2.04-1.02,5.7-1.36,6.74-4.05,12.3-15.74,20.56-29.08,20.56Z"/><g transform="translate(110.75,0)"><path class="cls-1" d="M66.21,12.98c0-7.11,5.65-12.68,13.07-12.68,3.99,0,7.55,1.59,10.09,4.35l-2.91,2.29c-1.87-2.01-4.4-3.09-7.19-3.09-5.21,0-9.29,3.86-9.29,9.12s4.08,9.14,9.29,9.14c2.88,0,5.38-1.1,7.28-3.15l2.95,2.24c-2.6,2.84-6.11,4.46-10.21,4.46-7.43,0-13.07-5.54-13.07-12.68Z"/><path class="cls-1" d="M90.86,12.98c0-7.11,5.65-12.68,13.07-12.68,3.99,0,7.55,1.59,10.09,4.35l-2.91,2.29c-1.87-2.01-4.4-3.09-7.19-3.09-5.21,0-9.29,3.86-9.29,9.12s4.08,9.14,9.29,9.14c2.88,0,5.38-1.1,7.28-3.15l2.95,2.24c-2.6,2.84-6.11,4.46-10.21,4.46-7.43,0-13.07-5.54-13.07-12.68Z"/><path class="cls-1" d="M117.74.72h19.2v3.44h-15.43v6.28l11.21.02v3.35h-11.21v7.98h15.45v3.46h-19.22V.72Z"/><path class="cls-1" d="M140.61.72h3.8l-.02,21.08h13.83v3.46h-17.6V.72Z"/><path class="cls-3" d="M38.15.38l.12.06c1.53.83,2.09,2.75,1.25,4.29l-10.42,19.04c-.84,1.54-2.77,2.13-4.31,1.3l-.12-.06c-1.53-.83-2.09-2.75-1.25-4.29L33.85,1.67c.84-1.54,2.77-2.13,4.31-1.3Z"/><path class="cls-2" d="M24.59,5.67h0c1.57.84,2.14,2.81,1.28,4.38l-7.48,13.68c-.86,1.58-2.83,2.17-4.4,1.33h0c-1.57-.84-2.14-2.81-1.28-4.38l7.48-13.68c.86-1.58,2.83-2.17,4.4-1.33Z"/><path class="cls-2" d="M10.6,12.2h0c1.57.84,2.14,2.81,1.28,4.38l-3.91,7.15c-.86,1.58-2.83,2.17-4.4,1.33h0c-1.57-.84-2.14-2.81-1.28-4.38l3.91-7.15c.86-1.58,2.83-2.17,4.4-1.33Z"/><path class="cls-1" d="M189.95,22.24h-1.3v-.39h3.11v.39h-1.3v3.02h-.51v-3.02Z"/><path class="cls-1" d="M192.29,21.84h.63l1.27,2.89,1.29-2.89h.61v3.42h-.47v-2.69l-1.23,2.69h-.41l-1.21-2.68v2.68h-.46v-3.42Z"/><path class="cls-1" d="M53.16.29c.31,0,.42.18.51.34.07.13,13.29,24.63,13.29,24.63h-4.08l-2.84-5.39h-13.81l-2.88,5.39h-4.17S52.59.79,52.68.63s.17-.34.48-.34ZM58.35,16.7s-4.93-9.33-4.99-9.44-.13-.16-.22-.16-.15.03-.21.14-5.02,9.46-5.02,9.46h10.44Z"/><path class="cls-1" d="M174.32.29c.31,0,.42.18.51.34.07.13,13.29,24.63,13.29,24.63h-4.08l-2.84-5.39h-13.81l-2.88,5.39h-4.17S173.75.79,173.83.63s.17-.34.48-.34ZM179.5,16.7s-4.93-9.33-4.99-9.44-.13-.16-.22-.16-.15.03-.21.14-5.02,9.46-5.02,9.46h10.44Z"/></g></svg>
+    </div>
+    <div class="sf-game">
+      <h4>SEMI-FINAL 2</h4>
+      <div class="slot empty" data-key="sf_2"></div>
+      <div class="slot empty" data-key="sf_3"></div>
+    </div>
+  </div>
+
+  <div class="side">
+    <div class="region-wrapper">
+      <div class="region-name">HARBOR</div>
+<div class="region rtl">
+<div class="round">
+<div class="game">
+  <div class="slot" data-key="r2_rd0_m0_s0">Jeremy Aquino</div>
+  <div class="slot" data-key="r2_rd0_m0_s1">Michael Boyd</div>
+</div>
+<div class="game">
+  <div class="slot" data-key="r2_rd0_m1_s0">Brian Peaver</div>
+  <div class="slot" data-key="r2_rd0_m1_s1">Patty Martin</div>
+</div>
+<div class="game">
+  <div class="slot playin-slot" data-playin="4" data-key="r2_rd0_m2_s0"></div>
+  <div class="slot" data-key="r2_rd0_m2_s1">Sandi Hirth</div>
+</div>
+<div class="game">
+  <div class="slot" data-key="r2_rd0_m3_s0">April Dillard</div>
+  <div class="slot" data-key="r2_rd0_m3_s1">Anooj Shah</div>
+</div>
+<div class="game">
+  <div class="slot" data-key="r2_rd0_m4_s0">Summer Navarro</div>
+  <div class="slot" data-key="r2_rd0_m4_s1">Kit Linscott</div>
+</div>
+<div class="game">
+  <div class="slot" data-key="r2_rd0_m5_s0">Josh Ely</div>
+  <div class="slot" data-key="r2_rd0_m5_s1">Eric Strang</div>
+</div>
+<div class="game">
+  <div class="slot playin-slot" data-playin="5" data-key="r2_rd0_m6_s0"></div>
+  <div class="slot" data-key="r2_rd0_m6_s1">Reid Christianson</div>
+</div>
+<div class="game">
+  <div class="slot" data-key="r2_rd0_m7_s0">Juan Raygoza</div>
+  <div class="slot" data-key="r2_rd0_m7_s1">Logan Histed</div>
+</div>
+</div>
+<div class="round">
+<div class="game">
+  <div class="slot empty" data-key="r2_rd1_m0_s0"></div>
+  <div class="slot empty" data-key="r2_rd1_m0_s1"></div>
+</div>
+<div class="game">
+  <div class="slot empty" data-key="r2_rd1_m1_s0"></div>
+  <div class="slot empty" data-key="r2_rd1_m1_s1"></div>
+</div>
+<div class="game">
+  <div class="slot empty" data-key="r2_rd1_m2_s0"></div>
+  <div class="slot empty" data-key="r2_rd1_m2_s1"></div>
+</div>
+<div class="game">
+  <div class="slot empty" data-key="r2_rd1_m3_s0"></div>
+  <div class="slot empty" data-key="r2_rd1_m3_s1"></div>
+</div>
+</div>
+<div class="round">
+<div class="game">
+  <div class="slot empty" data-key="r2_rd2_m0_s0"></div>
+  <div class="slot empty" data-key="r2_rd2_m0_s1"></div>
+</div>
+<div class="game">
+  <div class="slot empty" data-key="r2_rd2_m1_s0"></div>
+  <div class="slot empty" data-key="r2_rd2_m1_s1"></div>
+</div>
+</div>
+<div class="round last-round">
+<div class="game">
+  <div class="slot empty" data-key="r2_rd3_m0_s0"></div>
+  <div class="slot empty" data-key="r2_rd3_m0_s1"></div>
+</div>
+</div>
+</div>
+
+    </div>
+    <div class="region-wrapper">
+      <div class="region-name">TIDEWATER</div>
+<div class="region rtl">
+<div class="round">
+<div class="game">
+  <div class="slot" data-key="r3_rd0_m0_s0">Hayden Garvey</div>
+  <div class="slot" data-key="r3_rd0_m0_s1">Kelli Kilgore</div>
+</div>
+<div class="game">
+  <div class="slot playin-slot" data-playin="6" data-key="r3_rd0_m1_s0"></div>
+  <div class="slot" data-key="r3_rd0_m1_s1">Eric Toller</div>
+</div>
+<div class="game">
+  <div class="slot" data-key="r3_rd0_m2_s0">Adam Schmidt</div>
+  <div class="slot" data-key="r3_rd0_m2_s1">Dakota Lust</div>
+</div>
+<div class="game">
+  <div class="slot" data-key="r3_rd0_m3_s0">Brittany Rettagliata</div>
+  <div class="slot" data-key="r3_rd0_m3_s1">Becky O&#39;Brien</div>
+</div>
+<div class="game">
+  <div class="slot playin-slot" data-playin="7" data-key="r3_rd0_m4_s0"></div>
+  <div class="slot" data-key="r3_rd0_m4_s1">Seth Roberts</div>
+</div>
+<div class="game">
+  <div class="slot" data-key="r3_rd0_m5_s0">Betty Brattesani</div>
+  <div class="slot" data-key="r3_rd0_m5_s1">Todd Henderson</div>
+</div>
+<div class="game">
+  <div class="slot" data-key="r3_rd0_m6_s0">DeAnne Dodd</div>
+  <div class="slot playin-slot" data-playin="8" data-key="r3_rd0_m6_s1"></div>
+</div>
+<div class="game">
+  <div class="slot" data-key="r3_rd0_m7_s0">Pat Doperalski</div>
+  <div class="slot" data-key="r3_rd0_m7_s1">James McDonald</div>
+</div>
+</div>
+<div class="round">
+<div class="game">
+  <div class="slot empty" data-key="r3_rd1_m0_s0"></div>
+  <div class="slot empty" data-key="r3_rd1_m0_s1"></div>
+</div>
+<div class="game">
+  <div class="slot empty" data-key="r3_rd1_m1_s0"></div>
+  <div class="slot empty" data-key="r3_rd1_m1_s1"></div>
+</div>
+<div class="game">
+  <div class="slot empty" data-key="r3_rd1_m2_s0"></div>
+  <div class="slot empty" data-key="r3_rd1_m2_s1"></div>
+</div>
+<div class="game">
+  <div class="slot empty" data-key="r3_rd1_m3_s0"></div>
+  <div class="slot empty" data-key="r3_rd1_m3_s1"></div>
+</div>
+</div>
+<div class="round">
+<div class="game">
+  <div class="slot empty" data-key="r3_rd2_m0_s0"></div>
+  <div class="slot empty" data-key="r3_rd2_m0_s1"></div>
+</div>
+<div class="game">
+  <div class="slot empty" data-key="r3_rd2_m1_s0"></div>
+  <div class="slot empty" data-key="r3_rd2_m1_s1"></div>
+</div>
+</div>
+<div class="round last-round">
+<div class="game">
+  <div class="slot empty" data-key="r3_rd3_m0_s0"></div>
+  <div class="slot empty" data-key="r3_rd3_m0_s1"></div>
+</div>
+</div>
+</div>
+
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+const PLAYIN_GAMES = [["Garrick Greenhalgh", "Ryan Aughtry"], ["Eddie Hunt", "Ben Landis"], ["Justin Dyszelski", "Alex Kostopoulos"], ["Rebekah Anderson", "Ryan Kirkendall"], ["Nick Gough", "Robin Moulton"], ["Linh Vuong", "Mike Schwab"], ["Laura Avent", "Austin Beckstead"], ["Trisha Fittipaldi", "Oren Mishael"], ["Mike Ennis", "Nicolay Lameijer"]];
+const PLAYIN_MAP = {"0": [0, 4], "1": [0, 12], "2": [1, 4], "3": [1, 12], "4": [2, 4], "5": [2, 12], "6": [3, 2], "7": [3, 8], "8": [3, 13]};
+
+// =====================================================
+// RESULTS — Update this object with winners after each round.
+// Format: state key -> winner name
+// =====================================================
+const RESULTS = {
+  // Play-in winners (uncomment and fill as games are played):
+  // "pi_0_winner": "Garrick Greenhalgh",
+  // "pi_1_winner": "Eddie Hunt",
+  // etc.
+  //
+  // Main bracket advances (uncomment and fill):
+  // "r0_rd1_m0_s0": "Matthew Hopkins",
+  // etc.
+};
+// =====================================================
+
+let state = {};
+
+function buildInitialRegions() {
+  const regions = [["Matthew Hopkins", "Dalton Gilbert", "Bryanna Vandenberg", "Carl Figueiredo", "__PLAYIN_0__", "Tyler Stanchina", "Arllis Coates", "Joshua Hamaker", "Angela Holden", "Jeffrey Reese", "Trevor Milton", "David Madore", "__PLAYIN_1__", "Jessica Youngman", "Ryan Chavez", "Danielle Snell"], ["Rob Mago", "Anja Brady", "Jeffrey Taylor", "Caitlin Carter", "__PLAYIN_2__", "Neale Wooten", "Griffan Kerkmann", "James Burns", "Regan Harker", "Patrick Alspaugh", "Tammy Cohen", "Roy Boyle", "__PLAYIN_3__", "Bill Gardner", "Will King", "Animesh Irkulla"], ["Jeremy Aquino", "Michael Boyd", "Brian Peaver", "Patty Martin", "__PLAYIN_4__", "Sandi Hirth", "April Dillard", "Anooj Shah", "Summer Navarro", "Kit Linscott", "Josh Ely", "Eric Strang", "__PLAYIN_5__", "Reid Christianson", "Juan Raygoza", "Logan Histed"], ["Hayden Garvey", "Kelli Kilgore", "__PLAYIN_6__", "Eric Toller", "Adam Schmidt", "Dakota Lust", "Brittany Rettagliata", "Becky O'Brien", "__PLAYIN_7__", "Seth Roberts", "Betty Brattesani", "Todd Henderson", "DeAnne Dodd", "__PLAYIN_8__", "Pat Doperalski", "James McDonald"]];
+  return regions;
+}
+
+function getPlayinBracketKey(piIdx) {
+  const entry = PLAYIN_MAP[String(piIdx)];
+  if (!entry) return null;
+  const ri = entry[0], si = entry[1];
+  return 'r'+ri+'_rd0_m'+Math.floor(si/2)+'_s'+(si%2);
+}
+
+function initState() {
+  state = {};
+  const regions = buildInitialRegions();
+  for (let ri = 0; ri < 4; ri++) {
+    for (let m = 0; m < 8; m++) {
+      const s0 = regions[ri][m*2];
+      const s1 = regions[ri][m*2+1];
+      state['r'+ri+'_rd0_m'+m+'_s0'] = s0.startsWith('__PLAYIN_') ? '' : s0;
+      state['r'+ri+'_rd0_m'+m+'_s1'] = s1.startsWith('__PLAYIN_') ? '' : s1;
+    }
+    for (let rd = 1; rd <= 3; rd++) {
+      const nm = 8 >> rd;
+      for (let m = 0; m < nm; m++) {
+        state['r'+ri+'_rd'+rd+'_m'+m+'_s0'] = '';
+        state['r'+ri+'_rd'+rd+'_m'+m+'_s1'] = '';
+      }
+    }
+  }
+  for (let i = 0; i < 4; i++) state['sf_'+i] = '';
+  state['f_0'] = '';
+  state['f_1'] = '';
+  state['champ'] = '';
+  for (let i = 0; i < 9; i++) {
+    state['pi_'+i+'_s0'] = PLAYIN_GAMES[i][0];
+    state['pi_'+i+'_s1'] = PLAYIN_GAMES[i][1];
+    state['pi_'+i+'_winner'] = '';
+  }
+}
+
+function applyResults() {
+  for (const [key, value] of Object.entries(RESULTS)) {
+    state[key] = value;
+    if (key.match(/^pi_(\d+)_winner$/)) {
+      const piIdx = key.match(/^pi_(\d+)_winner$/)[1];
+      const bracketKey = getPlayinBracketKey(Number(piIdx));
+      if (bracketKey) state[bracketKey] = value;
+    }
+  }
+}
+
+function getNextKey(key) {
+  const rm = key.match(/^r(\d+)_rd(\d+)_m(\d+)_s(\d+)$/);
+  if (rm) {
+    const ri = Number(rm[1]), rd = Number(rm[2]), m = Number(rm[3]);
+    const nrd = rd + 1;
+    if (nrd <= 3) return 'r'+ri+'_rd'+nrd+'_m'+Math.floor(m/2)+'_s'+(m%2);
+    return 'sf_'+ri;
+  }
+  const sm = key.match(/^sf_(\d+)$/);
+  if (sm) {
+    const si = Number(sm[1]);
+    return si < 2 ? 'f_0' : 'f_1';
+  }
+  if (key === 'f_0' || key === 'f_1') return 'champ';
+  return null;
+}
+
+function getOpponentKey(key) {
+  const rm = key.match(/^r(\d+)_rd(\d+)_m(\d+)_s(\d+)$/);
+  if (rm) {
+    const s = Number(rm[4]);
+    return key.replace(/_s\d+$/, '_s'+(1-s));
+  }
+  const sm = key.match(/^sf_(\d+)$/);
+  if (sm) {
+    const si = Number(sm[1]);
+    return si % 2 === 0 ? 'sf_'+(si+1) : 'sf_'+(si-1);
+  }
+  if (key === 'f_0') return 'f_1';
+  if (key === 'f_1') return 'f_0';
+  return null;
+}
+
+function render() {
+  document.querySelectorAll('.playin-game .slot[data-key]').forEach(function(el) {
+    const key = el.dataset.key;
+    const name = state[key] || '';
+    el.textContent = name;
+    const piMatch = key.match(/^pi_(\d+)_s(\d+)$/);
+    if (piMatch) {
+      const piIdx = Number(piMatch[1]);
+      const winner = state['pi_'+piIdx+'_winner'];
+      let cls = 'slot';
+      if (winner === name && name) cls += ' winner';
+      else if (winner && winner !== name && name) cls += ' loser';
+      el.className = cls;
+    }
+  });
+  document.querySelectorAll('.bracket-container .slot[data-key]').forEach(function(el) {
+    const key = el.dataset.key;
+    const name = state[key] || '';
+    const piAttr = el.dataset.playin;
+    el.textContent = name || (piAttr !== undefined ? 'Play-In' : '');
+    let cls = 'slot';
+    if (key === 'champ') cls += ' champion-slot';
+    if (!name || !name.trim()) {
+      cls += piAttr !== undefined ? ' playin-slot' : ' empty';
+    } else {
+      if (piAttr !== undefined) cls += ' playin-slot filled';
+      const opKey = getOpponentKey(key);
+      const nk = getNextKey(key);
+      if (nk && opKey) {
+        const nextName = state[nk];
+        const opName = state[opKey];
+        if (nextName === name) {
+          cls += ' winner';
+          if (piAttr !== undefined) cls = cls.replace(' playin-slot filled','');
+        } else if (nextName && nextName === opName) {
+          cls += ' loser';
+          if (piAttr !== undefined) cls = cls.replace(' playin-slot filled','');
+        }
+      }
+    }
+    el.className = cls;
+  });
+}
+
+initState();
+applyResults();
+render();
+</script>
+</body>
+</html>
