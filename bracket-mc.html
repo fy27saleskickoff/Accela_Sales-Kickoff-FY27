@@ -756,10 +756,62 @@ function initState() {
 }
 
 function saveState() {
+  // Save to localStorage as backup
   try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e) {}
+  // Hard-save into URL hash — survives Safari clearing storage
+  try {
+    const diff = {};
+    const fresh = {};
+    initStateInto(fresh);
+    for (const k of Object.keys(state)) {
+      if (state[k] !== fresh[k]) diff[k] = state[k];
+    }
+    const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(diff))));
+    history.replaceState(null, '', '#' + encoded);
+  } catch(e) {}
+}
+
+function initStateInto(obj) {
+  const regions = buildInitialRegions();
+  for (let ri = 0; ri < 4; ri++) {
+    for (let m = 0; m < 8; m++) {
+      const s0 = regions[ri][m*2];
+      const s1 = regions[ri][m*2+1];
+      obj['r'+ri+'_rd0_m'+m+'_s0'] = s0.startsWith('__PLAYIN_') ? '' : s0;
+      obj['r'+ri+'_rd0_m'+m+'_s1'] = s1.startsWith('__PLAYIN_') ? '' : s1;
+    }
+    for (let rd = 1; rd <= 3; rd++) {
+      const nm = 8 >> rd;
+      for (let m = 0; m < nm; m++) {
+        obj['r'+ri+'_rd'+rd+'_m'+m+'_s0'] = '';
+        obj['r'+ri+'_rd'+rd+'_m'+m+'_s1'] = '';
+      }
+    }
+  }
+  for (let i = 0; i < 4; i++) obj['sf_'+i] = '';
+  obj['f_0'] = '';
+  obj['f_1'] = '';
+  obj['champ'] = '';
+  for (let i = 0; i < 9; i++) {
+    obj['pi_'+i+'_s0'] = PLAYIN_GAMES[i][0];
+    obj['pi_'+i+'_s1'] = PLAYIN_GAMES[i][1];
+    obj['pi_'+i+'_winner'] = '';
+  }
 }
 
 function loadState() {
+  // Try URL hash first — most reliable on iPad
+  try {
+    const hash = window.location.hash.slice(1);
+    if (hash) {
+      const json = decodeURIComponent(escape(atob(hash)));
+      const diff = JSON.parse(json);
+      initState();
+      for (const k of Object.keys(diff)) state[k] = diff[k];
+      return true;
+    }
+  } catch(e) {}
+  // Fall back to localStorage
   try {
     const s = localStorage.getItem(STORAGE_KEY);
     if (s) { state = JSON.parse(s); return true; }
