@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SKO FY27 — The Accelerator Challenge (MC)</title>
+<title>SKO FY27 — The Accelerator Challenge</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{
@@ -320,6 +320,17 @@ header .subtitle{
   <div class="subtitle">SKO FY27 &bull; 73 Competitors &bull; Single Elimination</div>
   <div class="controls">
     <button onclick="resetBracket()">Reset Bracket</button>
+  </div>
+  <div id="save-bar" style="margin-top:8px;display:flex;gap:8px;justify-content:center;align-items:center;flex-wrap:wrap;">
+    <button onclick="copySaveCode()" style="background:rgba(0,200,100,0.2);color:#5fea8a;border:1px solid rgba(0,200,100,0.5);padding:6px 16px;border-radius:4px;cursor:pointer;font-size:12px;font-family:inherit;font-weight:600;">COPY SAVE CODE</button>
+    <button onclick="showRestoreBox()" style="background:rgba(255,180,0,0.2);color:#ffc544;border:1px solid rgba(255,180,0,0.5);padding:6px 16px;border-radius:4px;cursor:pointer;font-size:12px;font-family:inherit;font-weight:600;">RESTORE FROM CODE</button>
+    <span id="save-status" style="color:rgba(255,255,255,0.4);font-size:11px;"></span>
+  </div>
+  <div id="restore-box" style="display:none;margin-top:8px;text-align:center;">
+    <textarea id="restore-input" placeholder="Paste save code here..." style="width:300px;height:50px;background:rgba(255,255,255,0.08);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:4px;padding:6px;font-size:11px;font-family:monospace;"></textarea>
+    <br>
+    <button onclick="doRestore()" style="margin-top:4px;background:rgba(255,180,0,0.3);color:#ffc544;border:1px solid rgba(255,180,0,0.5);padding:5px 14px;border-radius:4px;cursor:pointer;font-size:12px;font-family:inherit;">RESTORE</button>
+    <button onclick="document.getElementById('restore-box').style.display='none'" style="margin-top:4px;background:rgba(255,255,255,0.08);color:#aaa;border:1px solid rgba(255,255,255,0.2);padding:5px 14px;border-radius:4px;cursor:pointer;font-size:12px;font-family:inherit;">CANCEL</button>
   </div>
 </header>
 
@@ -755,23 +766,17 @@ function initState() {
   }
 }
 
-function saveState() {
-  // Save to localStorage as backup
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e) {}
-  // Hard-save into URL hash — survives Safari clearing storage
-  try {
-    const diff = {};
-    const fresh = {};
-    initStateInto(fresh);
-    for (const k of Object.keys(state)) {
-      if (state[k] !== fresh[k]) diff[k] = state[k];
-    }
-    const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(diff))));
-    history.replaceState(null, '', '#' + encoded);
-  } catch(e) {}
+function getSaveCode() {
+  const fresh = {};
+  buildFreshState(fresh);
+  const diff = {};
+  for (const k of Object.keys(state)) {
+    if (state[k] !== fresh[k]) diff[k] = state[k];
+  }
+  return btoa(unescape(encodeURIComponent(JSON.stringify(diff))));
 }
 
-function initStateInto(obj) {
+function buildFreshState(obj) {
   const regions = buildInitialRegions();
   for (let ri = 0; ri < 4; ri++) {
     for (let m = 0; m < 8; m++) {
@@ -799,11 +804,18 @@ function initStateInto(obj) {
   }
 }
 
+function saveState() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e) {}
+  try { history.replaceState(null, '', '#' + getSaveCode()); } catch(e) {}
+  var el = document.getElementById('save-status');
+  if (el) el.textContent = 'Progress saved ✓';
+}
+
 function loadState() {
-  // Try URL hash first — most reliable on iPad
+  // Try URL hash first
   try {
     const hash = window.location.hash.slice(1);
-    if (hash) {
+    if (hash && hash.length > 2) {
       const json = decodeURIComponent(escape(atob(hash)));
       const diff = JSON.parse(json);
       initState();
@@ -811,12 +823,55 @@ function loadState() {
       return true;
     }
   } catch(e) {}
-  // Fall back to localStorage
+  // Try localStorage
   try {
     const s = localStorage.getItem(STORAGE_KEY);
     if (s) { state = JSON.parse(s); return true; }
   } catch(e) {}
   return false;
+}
+
+function copySaveCode() {
+  const code = getSaveCode();
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(code).then(function() {
+      var el = document.getElementById('save-status');
+      if (el) { el.textContent = 'Copied! Paste into Notes app to keep safe.'; el.style.color = '#5fea8a'; }
+    });
+  } else {
+    var ta = document.createElement('textarea');
+    ta.value = code;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    var el = document.getElementById('save-status');
+    if (el) { el.textContent = 'Copied! Paste into Notes app to keep safe.'; el.style.color = '#5fea8a'; }
+  }
+}
+
+function showRestoreBox() {
+  document.getElementById('restore-box').style.display = 'block';
+  document.getElementById('restore-input').value = '';
+  document.getElementById('restore-input').focus();
+}
+
+function doRestore() {
+  var code = document.getElementById('restore-input').value.trim();
+  if (!code) { alert('Paste a save code first.'); return; }
+  try {
+    const json = decodeURIComponent(escape(atob(code)));
+    const diff = JSON.parse(json);
+    initState();
+    for (const k of Object.keys(diff)) state[k] = diff[k];
+    saveState();
+    render();
+    document.getElementById('restore-box').style.display = 'none';
+    var el = document.getElementById('save-status');
+    if (el) { el.textContent = 'Bracket restored!'; el.style.color = '#5fea8a'; }
+  } catch(e) {
+    alert('Invalid save code. Make sure you copied the full code.');
+  }
 }
 
 function getPlayinBracketKey(piIdx) {
@@ -1017,27 +1072,8 @@ function render() {
   });
 }
 
-// Password gate
-(function() {
-  const PASS = 'king1924';
-  const AUTH_KEY = 'sko_mc_auth';
-  if (sessionStorage.getItem(AUTH_KEY) === 'yes') {
-    if (!loadState()) initState();
-    render();
-    return;
-  }
-  document.body.style.display = 'none';
-  const pw = prompt('Enter MC password:');
-  if (pw === PASS) {
-    sessionStorage.setItem(AUTH_KEY, 'yes');
-    document.body.style.display = '';
-    if (!loadState()) initState();
-    render();
-  } else {
-    document.body.innerHTML = '<div style="color:white;text-align:center;padding:80px;font-size:24px;">Access denied.</div>';
-    document.body.style.display = '';
-  }
-})();
+if (!loadState()) initState();
+render();
 </script>
 </body>
 </html>
