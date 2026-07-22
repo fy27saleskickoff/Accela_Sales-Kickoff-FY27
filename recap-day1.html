@@ -11,135 +11,185 @@
   --deep-blue: #0068BE;
   --light-blue: #00AFF1;
   --teal: #00CEC3;
+  --cool-gray: #D4D8D9;
+  --yellow: #EAC645;
+  --orange: #EA7445;
   --white: #FFFFFF;
   --sand: #F4F1EC;
+  --bg-warm: #F8F9FA;
+  --text: #0D263A;
+  --text-secondary: #4A5568;
   --text-muted: #718096;
-  --yellow: #EAC645;
 }
 * { margin:0; padding:0; box-sizing:border-box; }
 html { scroll-behavior: smooth; }
-body { font-family: "Plus Jakarta Sans", system-ui, sans-serif; color: var(--white); background: var(--navy); }
+body {
+  font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+  color: var(--text);
+  background: var(--white);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.5;
+}
+h1,h2,h3,h4 { font-weight:700; letter-spacing:-0.02em; line-height:1.1; }
 
-.back-link {
+.page-hero {
+  background: linear-gradient(160deg, rgba(13,38,58,0.9) 0%, rgba(0,104,190,0.8) 100%);
+  padding: 100px 40px 60px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.page-hero::after {
+  content:''; position:absolute; bottom:-2px; left:0; right:0; height:40px;
+  background:var(--white); clip-path:ellipse(55% 100% at 50% 100%); z-index:1;
+}
+.page-hero .back-link {
+  position: absolute; top: 28px; left: 40px;
   display: inline-flex; align-items: center; gap: 6px;
-  color: var(--light-blue); text-decoration: none; font-size: 14px; font-weight: 500;
-  padding: 24px 32px 0; transition: color 0.2s;
+  color: rgba(255,255,255,0.6); text-decoration: none; font-size: 14px; font-weight: 500;
+  transition: color 0.2s;
 }
-.back-link:hover { color: var(--teal); }
-.back-link svg { width: 16px; height: 16px; }
+.page-hero .back-link:hover { color: var(--white); }
+.page-hero .back-link svg { width: 16px; height: 16px; }
+.page-hero h1 {
+  font-size: 48px; color: var(--white); font-weight: 800;
+  margin-bottom: 8px; position: relative; z-index: 2;
+}
+.page-hero .date {
+  font-size: 16px; color: rgba(255,255,255,0.5); font-weight: 500;
+  letter-spacing: 1px; position: relative; z-index: 2;
+}
 
-.page-header {
-  text-align: center; padding: 32px 24px 24px;
-}
-.page-header h1 {
-  font-size: 32px; font-weight: 800; letter-spacing: 2px;
-  background: linear-gradient(135deg, var(--light-blue), var(--teal));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  margin-bottom: 8px;
-}
-.page-header .date { font-size: 14px; color: rgba(255,255,255,0.5); letter-spacing: 1px; }
+.container { max-width: 900px; margin: 0 auto; padding: 0 40px; }
 
-.sessions { max-width: 900px; margin: 0 auto; padding: 0 24px 60px; display: flex; flex-direction: column; gap: 16px; }
+.sessions { padding: 60px 0 80px; }
 
 .session-card {
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 12px; overflow: hidden;
-  transition: border-color 0.2s;
+  margin-bottom: 24px;
+  border: 1px solid rgba(0,0,0,0.06);
+  border-radius: 14px;
+  overflow: hidden;
+  transition: box-shadow 0.25s;
 }
-.session-card:hover { border-color: rgba(0,175,241,0.3); }
-.session-card.open { border-color: rgba(0,175,241,0.4); }
+.session-card:hover { box-shadow: 0 4px 24px rgba(0,0,0,0.06); }
+.session-card.open { box-shadow: 0 6px 32px rgba(0,0,0,0.08); }
 
 .session-header {
   display: flex; align-items: center; gap: 16px;
   padding: 20px 24px; cursor: pointer; user-select: none;
+  background: var(--white);
+  transition: background 0.2s;
 }
+.session-header:hover { background: var(--bg-warm); }
+
 .session-icon {
-  width: 42px; height: 42px; border-radius: 10px;
+  width: 46px; height: 46px; border-radius: 12px;
   display: flex; align-items: center; justify-content: center;
-  font-size: 20px; flex-shrink: 0;
+  font-size: 22px; flex-shrink: 0;
 }
+
 .session-header-text { flex: 1; }
-.session-header-text h2 { font-size: 16px; font-weight: 700; margin-bottom: 2px; }
-.session-header-text .session-speakers { font-size: 12px; color: rgba(255,255,255,0.45); }
+.session-header-text h2 { font-size: 17px; font-weight: 700; color: var(--navy); margin-bottom: 3px; }
+.session-header-text .session-speakers { font-size: 13px; color: var(--text-muted); font-weight: 500; }
+
 .expand-arrow {
-  width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;
-  color: rgba(255,255,255,0.3); transition: transform 0.25s, color 0.2s; flex-shrink: 0;
+  width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;
+  color: var(--text-muted); transition: transform 0.25s, color 0.2s; flex-shrink: 0;
+  background: var(--sand); border-radius: 50%;
 }
-.session-card.open .expand-arrow { transform: rotate(180deg); color: var(--light-blue); }
+.session-card.open .expand-arrow { transform: rotate(180deg); color: var(--deep-blue); background: rgba(0,104,190,0.1); }
 
-.session-body {
-  max-height: 0; overflow: hidden; transition: max-height 0.35s ease;
+.session-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+.session-body-inner { padding: 0 24px 28px; }
+
+.session-summary {
+  font-size: 14px; line-height: 1.7; color: var(--text-secondary);
+  margin-bottom: 20px; padding-bottom: 16px;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
 }
-.session-body-inner { padding: 0 24px 24px; }
 
-.takeaway-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+.takeaway-list { list-style: none; display: flex; flex-direction: column; gap: 14px; }
 .takeaway-list li {
-  padding: 12px 16px; background: rgba(255,255,255,0.03);
-  border-left: 3px solid var(--deep-blue); border-radius: 0 8px 8px 0;
+  padding: 14px 18px;
+  background: var(--bg-warm);
+  border-left: 3px solid var(--deep-blue);
+  border-radius: 0 10px 10px 0;
 }
-.takeaway-list li strong { display: block; font-size: 13px; color: var(--light-blue); margin-bottom: 4px; }
-.takeaway-list li p { font-size: 13px; line-height: 1.5; color: rgba(255,255,255,0.7); }
+.takeaway-list li strong {
+  display: block; font-size: 14px; font-weight: 700;
+  color: var(--navy); margin-bottom: 4px;
+}
+.takeaway-list li p {
+  font-size: 13px; line-height: 1.65; color: var(--text-secondary);
+}
 
-.followup-section { margin-top: 20px; }
+.followup-section { margin-top: 24px; padding-top: 20px; border-top: 1px solid rgba(0,0,0,0.05); }
 .followup-section h3 {
-  font-size: 11px; letter-spacing: 2px; color: var(--yellow);
-  font-weight: 700; margin-bottom: 10px; text-transform: uppercase;
+  font-size: 12px; letter-spacing: 2px; color: var(--orange);
+  font-weight: 700; margin-bottom: 12px; text-transform: uppercase;
 }
 .followup-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
 .followup-list li {
-  padding: 10px 14px; background: rgba(234,198,69,0.05);
-  border: 1px solid rgba(234,198,69,0.12); border-radius: 8px;
-  font-size: 13px; line-height: 1.5; color: rgba(255,255,255,0.7);
+  padding: 12px 16px;
+  background: rgba(234,116,69,0.04);
+  border: 1px solid rgba(234,116,69,0.12);
+  border-radius: 10px;
+  font-size: 13px; line-height: 1.6; color: var(--text-secondary);
+  display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;
 }
-.followup-list li .owner { color: var(--yellow); font-weight: 600; font-size: 12px; }
+.followup-list li .owner {
+  color: var(--orange); font-weight: 600; font-size: 12px;
+  white-space: nowrap; flex-shrink: 0;
+}
 </style>
 </head>
 <body>
-<a href="index.html" class="back-link">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-  Back to SKO Home
-</a>
 
-<div class="page-header">
-  <h1>DAY 1 RECAP</h1>
+<div class="page-hero">
+  <a href="index.html" class="back-link">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Back to SKO Home
+  </a>
+  <h1>Day 1 Recap</h1>
   <div class="date">Tuesday, July 21, 2026</div>
 </div>
 
+<div class="container">
 <div class="sessions">
 
   <!-- Session 1: AI Transformation -->
   <div class="session-card">
     <div class="session-header" onclick="toggle(this)">
-      <div class="session-icon" style="background:rgba(0,175,241,0.15)">&#129302;</div>
+      <div class="session-icon" style="background:rgba(0,175,241,0.1)">&#129302;</div>
       <div class="session-header-text">
         <h2>AI Transformation in Enterprise Sales</h2>
-        <div class="session-speakers">Noam, Matt Donovan, Eric McCauley, Mike Shop, Clint Knight</div>
+        <div class="session-speakers">Noam Reininger, Matt Donovan, Eric McCauley, Mike Schwab, Clint Knittle</div>
       </div>
       <div class="expand-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
     </div>
     <div class="session-body">
       <div class="session-body-inner">
+        <div class="session-summary">Leadership discussed the profound impact of AI on enterprise sales, emphasizing the shift from relationship-based selling to strategic advisory roles, outcome-driven conversations, and ecosystem optimization.</div>
         <ul class="takeaway-list">
           <li>
             <strong>Shift to Strategic Advisory</strong>
-            <p>The biggest change in sales is the move from relationship builder to strategic advisor. Buyers now expect deep understanding of staffing, budget pressures, and mission goals. This is what builds executive trust.</p>
+            <p>Matt Donovan explained that the biggest change in sales is the move from relationship builder to strategic advisor. Buyers now expect a deep understanding of staffing, budget pressures, and mission goals — this is what builds executive trust, not golf outings and dinners.</p>
           </li>
           <li>
             <strong>Outcome-Focused Selling</strong>
-            <p>Top reps focus on delivering measurable results — faster permit approvals, improved citizen experiences — rather than selling software features. The shift is from solution selling to outcome architecture.</p>
+            <p>Tom and Cary highlighted the transition from solution selling to outcome architecture. Top reps focus on delivering measurable results — faster permit approvals, improved citizen experiences, reduced processing times — rather than listing software features. The conversation has to center on what the agency gets, not what the platform does.</p>
           </li>
           <li>
             <strong>Intelligence Over Information</strong>
-            <p>AI has leveled the playing field by making information widely available. The best reps now arrive with intelligence — understanding customer priorities and objections before meetings even start.</p>
+            <p>Mike Schwab noted that AI has leveled the playing field by making information widely available. The best reps now arrive with intelligence — understanding customer priorities, internal politics, and likely objections before meetings — which elevates the quality of every conversation.</p>
           </li>
           <li>
             <strong>Quantifying Value</strong>
-            <p>Elite reps differentiate by quantifying the impact of delays, lost productivity, and revenue. The conversation shifts from price to visible value and outcomes.</p>
+            <p>Eric McCauley described how elite reps differentiate themselves by quantifying the impact of delays, lost productivity, and revenue leakage. When you shift the conversation from price to visible value and measurable outcomes, budget objections shrink and urgency increases.</p>
           </li>
           <li>
             <strong>Ecosystem Optimization</strong>
-            <p>CIOs now evaluate technology based on integration and ecosystem fit. Successful reps help optimize across departments rather than focusing on a single product.</p>
+            <p>Clint Knittle discussed how CIOs now evaluate technology based on integration and ecosystem fit, not standalone features. Successful reps help customers optimize across departments rather than selling into a single use case — the broader the footprint, the stickier the deal.</p>
           </li>
         </ul>
       </div>
@@ -149,37 +199,44 @@ body { font-family: "Plus Jakarta Sans", system-ui, sans-serif; color: var(--whi
   <!-- Session 2: Product Roadmap -->
   <div class="session-card">
     <div class="session-header" onclick="toggle(this)">
-      <div class="session-icon" style="background:rgba(0,206,195,0.15)">&#128640;</div>
+      <div class="session-icon" style="background:rgba(0,206,195,0.1)">&#128640;</div>
       <div class="session-header-text">
         <h2>Accela Product Roadmap &amp; Platform Strategy</h2>
-        <div class="session-speakers">Noam</div>
+        <div class="session-speakers">Noam Reininger</div>
       </div>
       <div class="expand-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
     </div>
     <div class="session-body">
       <div class="session-body-inner">
+        <div class="session-summary">Noam provided an in-depth overview of Accela's product roadmap, acquisition strategy, and platform enhancements, including AI capabilities, new product launches, and the focus on reducing total cost of ownership.</div>
         <ul class="takeaway-list">
           <li>
             <strong>Acquisition &amp; Integration Strategy</strong>
-            <p>OpenCounter, ePermitHub, Novotx, and Savera AI each strengthen the end-to-end platform and accelerate implementation for customers.</p>
+            <p>Noam detailed the rationale behind acquiring OpenCounter, ePermitHub, Novotx, and Savera AI — each acquisition strengthens the end-to-end platform and accelerates implementation for customers. The goal is a fully integrated suite, not a collection of bolted-on products.</p>
           </li>
           <li>
             <strong>AI-Enabled Product Launches</strong>
-            <p>OpenCounter AI is rolling out. ePermitHub Auto Plan Review pilots in August with GA in December. AI 311 is in development. Savera AI will move from PS to product integration after safety guardrails are established.</p>
+            <p>OpenCounter AI is rolling out now. ePermitHub Auto Plan Review enters pilot in August with GA in December. AI 311 is in active development. Savera AI will transition from professional services tooling to product integration after safety guardrails are established and validated.</p>
           </li>
           <li>
             <strong>Reducing Total Cost of Ownership</strong>
-            <p>AI-powered automatic configuration and adaptation to new regulations makes the platform more accessible and cost-effective for agencies.</p>
+            <p>Noam emphasized the strategic goal of lowering TCO by leveraging AI for automatic configuration and real-time adaptation to new regulations. This makes the platform more accessible and cost-effective for agencies — a direct response to budget-constrained government buyers.</p>
           </li>
           <li>
             <strong>Competitive Landscape</strong>
-            <p>Against OpenGov, Tyler, and Clarity — Accela's differentiator is specialized government workflows, platform ownership, and outcomes-based expertise over broad horizontal expansion.</p>
+            <p>Against OpenGov, Tyler, and Clarity — Accela's differentiation is specialized government workflows, full platform ownership, and outcomes-driven expertise. Competitors are expanding horizontally into government; Accela goes deeper into the workflows that matter most.</p>
           </li>
           <li>
-            <strong>Platform Stability &amp; Leadership</strong>
-            <p>After addressing platform outages and architectural issues, Jim White was brought in and product/technology leadership was consolidated under Sam Ada for better stability and execution.</p>
+            <strong>Platform Stability &amp; Team Changes</strong>
+            <p>After reviewing platform outages and architectural issues, Noam described the decision to bring in Jim White and consolidate product and technology leadership under Sam Ada. This is about execution discipline — fewer outages, faster releases, more predictable delivery.</p>
           </li>
         </ul>
+        <div class="followup-section">
+          <h3>Follow-Up Actions</h3>
+          <ul class="followup-list">
+            <li><span>Coordinate and schedule a Savera AI demo for Allegheny County</span> <span class="owner">Eric, J.K.</span></li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
@@ -187,7 +244,7 @@ body { font-family: "Plus Jakarta Sans", system-ui, sans-serif; color: var(--whi
   <!-- Session 3: Public Portal -->
   <div class="session-card">
     <div class="session-header" onclick="toggle(this)">
-      <div class="session-icon" style="background:rgba(0,104,190,0.15)">&#127760;</div>
+      <div class="session-icon" style="background:rgba(0,104,190,0.1)">&#127760;</div>
       <div class="session-header-text">
         <h2>Public Portal &amp; Customer Adoption</h2>
         <div class="session-speakers">Joshua Hamaker</div>
@@ -196,18 +253,23 @@ body { font-family: "Plus Jakarta Sans", system-ui, sans-serif; color: var(--whi
     </div>
     <div class="session-body">
       <div class="session-body-inner">
+        <div class="session-summary">Joshua presented updates on public portal adoption metrics, growth initiatives for FY27, and the feature roadmap, while addressing questions about super agency support, SSO, and content management.</div>
         <ul class="takeaway-list">
           <li>
-            <strong>Adoption Metrics</strong>
-            <p>Customer satisfaction: 4.2. Ease-of-use: 4.6. Currently 9 customers in production, 46 in non-production, 123 in staging. FY27 goal: 86 live in production, 275 in non-production.</p>
+            <strong>Adoption Metrics &amp; Goals</strong>
+            <p>Customer satisfaction score of 4.2 and ease-of-use score of 4.6 for the new public portal. Currently 9 customers in production, 46 in non-production, and 123 in staging. FY27 targets: 86 live customers in production and 275 in non-production.</p>
           </li>
           <li>
             <strong>Growth Initiatives</strong>
-            <p>Continued on-site and virtual white glove services, monthly office hours, and targeted training sessions focused on feature education and customer communication strategies.</p>
+            <p>Continued on-site and virtual white glove services, monthly office hours, and targeted training sessions to drive adoption. Focus is on both feature education and helping customers communicate the change to their residents and applicants.</p>
           </li>
           <li>
             <strong>Feature Roadmap</strong>
-            <p>Upcoming: Canada support, SSO, vanity URLs, OpenCounter direct connect, APAC support, enhanced user management, restyled page flow, record details, super agency support, and content pages.</p>
+            <p>Key upcoming features: support for Canada, SSO, vanity URLs, OpenCounter direct connect, APAC support, enhanced user management, restyled page flow, record details, super agency support, and content pages. Q1 focus is on stability and quality of service.</p>
+          </li>
+          <li>
+            <strong>Super Agency &amp; Content Pages</strong>
+            <p>Super agency support will include seamless integration with OpenCounter. Restyled page flow covers application process steps, while content pages allow agencies to insert custom content. Both are distinct capabilities on the roadmap.</p>
           </li>
         </ul>
       </div>
@@ -217,7 +279,7 @@ body { font-family: "Plus Jakarta Sans", system-ui, sans-serif; color: var(--whi
   <!-- Session 4: OpenCounter AI -->
   <div class="session-card">
     <div class="session-header" onclick="toggle(this)">
-      <div class="session-icon" style="background:rgba(234,198,69,0.15)">&#128161;</div>
+      <div class="session-icon" style="background:rgba(234,198,69,0.1)">&#128161;</div>
       <div class="session-header-text">
         <h2>OpenCounter AI Digital Assistant</h2>
         <div class="session-speakers">Linh Vuong</div>
@@ -226,28 +288,36 @@ body { font-family: "Plus Jakarta Sans", system-ui, sans-serif; color: var(--whi
     </div>
     <div class="session-body">
       <div class="session-body-inner">
+        <div class="session-summary">Linh provided a comprehensive overview of the OpenCounter AI Digital Assistant — its technical underpinnings, early adopter results, agency concerns, and strategies for broader adoption.</div>
         <ul class="takeaway-list">
           <li>
-            <strong>AI Implementation Results</strong>
-            <p>75% of users choose AI over traditional flows. 80% completion rate among early adopters. Enhances the permit guide process by collecting richer applicant context through conversational input.</p>
+            <strong>AI Implementation &amp; User Experience</strong>
+            <p>OpenCounter AI enhances the permit guide process by collecting richer applicant context through conversational input. 75% of users choose AI over traditional flows, with 80% completion rates among early adopters. The AI doesn't replace the permit guide — it makes it smarter and more personalized.</p>
           </li>
           <li>
-            <strong>Safety &amp; Security</strong>
-            <p>No hallucinations — relies on agency-configured rules. Staff can review and adjust guides. Passed third-party penetration testing with zero findings.</p>
+            <strong>Safety, Security &amp; Human Oversight</strong>
+            <p>The AI avoids hallucinations by relying strictly on agency-configured rules — it doesn't make things up. Staff can review and adjust AI-generated guides at any time. The system passed third-party penetration testing with zero findings. Uses prompt engineering with Anthropic models and does not train on agency data.</p>
           </li>
           <li>
-            <strong>Adoption Challenges</strong>
-            <p>Cincinnati adopted successfully. Orlando and Detroit paused due to policy and leadership changes. Executive buy-in and clear AI policies are critical for sustained adoption.</p>
+            <strong>Agency Adoption Challenges</strong>
+            <p>Cincinnati successfully adopted the AI assistant and is seeing strong results. Orlando and Detroit paused deployments due to internal policy and leadership changes — not product issues. Key learning: executive buy-in and clear organizational AI policies are prerequisites for sustained adoption.</p>
           </li>
           <li>
-            <strong>Technical Details</strong>
-            <p>Uses prompt engineering with Anthropic models. Does not train on agency data. Can be implemented in ~2 hours if the rules engine is already configured.</p>
+            <strong>Implementation Speed</strong>
+            <p>If the agency's rules engine is already configured, OpenCounter AI can be implemented in approximately two hours. Staff complete a short training course before going live. The barrier is organizational readiness, not technical complexity.</p>
           </li>
           <li>
             <strong>Future Roadmap</strong>
-            <p>Permit Guide Essentials (down-market), replacement of Velocimo integration, fee calculators, and deeper ePermitHub integration for plan review requirements.</p>
+            <p>Upcoming: Permit Guide Essentials (down-market offering), replacement of Velocimo integration, fee calculators, and deeper integration with ePermitHub for plan review requirements. The vision is AI-assisted from first inquiry through plan review.</p>
           </li>
         </ul>
+        <div class="followup-section">
+          <h3>Follow-Up Actions</h3>
+          <ul class="followup-list">
+            <li><span>Promote and sell OpenCounter in Canada — now available in that market</span> <span class="owner">Eric</span></li>
+            <li><span>Direct any OpenCounter AI marketing asset requests to Linh only if they differ from existing one-pagers and pitch decks on HighSpot</span> <span class="owner">All Reps</span></li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
@@ -255,38 +325,43 @@ body { font-family: "Plus Jakarta Sans", system-ui, sans-serif; color: var(--whi
   <!-- Session 5: Secure Pay -->
   <div class="session-card">
     <div class="session-header" onclick="toggle(this)">
-      <div class="session-icon" style="background:rgba(0,175,241,0.15)">&#128179;</div>
+      <div class="session-icon" style="background:rgba(0,175,241,0.1)">&#128179;</div>
       <div class="session-header-text">
-        <h2>Secure Pay Product Launch</h2>
+        <h2>Secure Pay Product Launch &amp; Onboarding</h2>
         <div class="session-speakers">Linh Vuong, Tammy Cohen</div>
       </div>
       <div class="expand-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
     </div>
     <div class="session-body">
       <div class="session-body-inner">
+        <div class="session-summary">Linh and Tammy introduced Secure Pay — its integration into the Accela platform, onboarding process, technical requirements, early adopter program, and financial impact for agencies and Accela.</div>
         <ul class="takeaway-list">
           <li>
             <strong>Product Overview</strong>
-            <p>Fully integrated payment solution within Accela — no third-party redirects. Centralized transaction reconciliation hub. PCI Level 1 compliant payment facilitator model.</p>
+            <p>Secure Pay is a fully integrated payment solution within Accela, eliminating third-party redirects and providing a centralized hub for transaction reconciliation. End-to-end experience from the applicant's perspective — no leaving the Accela portal to pay. PCI Level 1 compliant using a payment facilitator model.</p>
           </li>
           <li>
             <strong>Early Adopter Program</strong>
-            <p>20 early adopter slots available. Four-week white glove onboarding with Payrix configuration. Priority for agencies previously using Velocimo.</p>
+            <p>20 early adopter slots available. Four-week white glove onboarding service with Payrix configuration. Priority goes to agencies previously using Velocimo. Reps should identify eligible customers and have them complete the eligibility survey.</p>
           </li>
           <li>
-            <strong>Requirements</strong>
-            <p>Agencies must switch to WorldPay as merchant of record. Sub-merchant agreement required. PayPal not supported with Secure Pay.</p>
+            <strong>Technical &amp; Contractual Requirements</strong>
+            <p>Agencies must switch to WorldPay as the merchant of record and sign a sub-merchant agreement. PayPal is not supported with Secure Pay. These are non-negotiable requirements — set expectations with customers early in the conversation.</p>
           </li>
           <li>
-            <strong>Roadmap</strong>
-            <p>GA planned for fall. Upcoming: back office shopping cart, multi-merchant IDs, vanity URLs, self-service onboarding, refunds, and device support.</p>
+            <strong>Financial Impact &amp; Revenue Calculation</strong>
+            <p>A sample calculation for Fresno demonstrated how Secure Pay generates revenue for Accela based on transaction volume. Guidance was provided on evaluating financial viability for specific accounts — not every agency will pencil out, so use the calculator to qualify.</p>
+          </li>
+          <li>
+            <strong>Roadmap &amp; GA Timeline</strong>
+            <p>General availability planned for fall. Upcoming features: back office shopping cart, multi-merchant IDs, vanity URLs, self-service onboarding, and expanded financial capabilities including refunds and device support.</p>
           </li>
         </ul>
         <div class="followup-section">
           <h3>Follow-Up Actions</h3>
           <ul class="followup-list">
-            <li>Identify and submit eligible customers for Secure Pay early adopter program via the eligibility survey <span class="owner">All Reps</span></li>
-            <li>Revenue calculator enhancement — add easy way to see potential revenue for agencies <span class="owner">Linh, Tammy</span></li>
+            <li><span>Identify and submit eligible customers for Secure Pay early adopter program by completing the eligibility survey</span> <span class="owner">All Reps</span></li>
+            <li><span>Add an easy way to see potential revenue for agencies in the Secure Pay revenue calculator</span> <span class="owner">Linh, Tammy</span></li>
           </ul>
         </div>
       </div>
@@ -296,7 +371,7 @@ body { font-family: "Plus Jakarta Sans", system-ui, sans-serif; color: var(--whi
   <!-- Session 6: Marketing -->
   <div class="session-card">
     <div class="session-header" onclick="toggle(this)">
-      <div class="session-icon" style="background:rgba(234,116,69,0.15)">&#128226;</div>
+      <div class="session-icon" style="background:rgba(234,116,69,0.1)">&#128226;</div>
       <div class="session-header-text">
         <h2>Marketing Strategy &amp; FY27 Initiatives</h2>
         <div class="session-speakers">Gabe Graham, Sarah Thorowgood</div>
@@ -305,34 +380,34 @@ body { font-family: "Plus Jakarta Sans", system-ui, sans-serif; color: var(--whi
     </div>
     <div class="session-body">
       <div class="session-body-inner">
+        <div class="session-summary">Gabe and Sarah outlined marketing achievements from FY26, ambitious pipeline goals for FY27, the integration of AI into marketing operations, and upcoming campaigns and events including Accelarate.</div>
         <ul class="takeaway-list">
           <li>
             <strong>FY26 Performance &amp; FY27 Targets</strong>
-            <p>BDRs generated $15.5M and marketing $11.6M in FY26, exceeding targets. FY27 goal: $29M in new logo pipeline, supported by team expansion and AI-driven efficiencies.</p>
+            <p>BDRs generated $15.5M and marketing generated $11.6M in pipeline in FY26, exceeding targets. FY27 goal: $29M in new logo pipeline — nearly doubling the combined output. Supported by team expansion and AI-driven efficiencies. The expectation is to do more with the same budget by leveraging AI across outreach, research, and campaign execution.</p>
           </li>
           <li>
-            <strong>AI-Driven Marketing</strong>
-            <p>AI tools are being used to personalize outreach, conduct research, and drive efficiency. Plans to leverage AI further to meet increased targets without additional budget.</p>
+            <strong>AI-Driven Marketing &amp; Campaigns</strong>
+            <p>AI tools are being used to personalize outreach at scale, conduct account research, and drive efficiency in both BDR and marketing activities. Plans to leverage AI further to meet increased targets without proportional budget increases — the productivity gain is the strategy.</p>
           </li>
           <li>
-            <strong>Quarterly Themes</strong>
-            <p>Civic AI, end-to-end platform stories, resident experience, and connected operations — aligned with product launches and market readiness.</p>
+            <strong>Quarterly Themes &amp; Messaging</strong>
+            <p>Marketing will focus on quarterly themes: Civic AI, end-to-end platform stories, resident experience, and connected operations. Each theme aligns with product launches and market readiness windows. Reps should align their outbound messaging to these themes for consistency.</p>
           </li>
           <li>
-            <strong>ABM &amp; Podcast</strong>
-            <p>Reps encouraged to propose account-based marketing campaigns and podcast guests. Successful examples in Georgia and Pennsylvania. Civic Innovators Podcast is a powerful outreach tool.</p>
+            <strong>Account-Based Marketing &amp; Podcast</strong>
+            <p>Reps are encouraged to propose account-based marketing campaigns and podcast guests. Successful ABM examples in Georgia and Pennsylvania drove significant pipeline. The Civic Innovators Podcast is a powerful storytelling and relationship-building tool — especially for green and yellow accounts doing innovative work.</p>
           </li>
           <li>
-            <strong>Branding &amp; Accelarate</strong>
-            <p>Streamlining product branding and naming conventions. Accelarate event prep in progress with focus on sales expansion and customer engagement opportunities.</p>
+            <strong>Branding &amp; Accelarate Prep</strong>
+            <p>Efforts underway to streamline product branding and naming conventions for clarity across the growing portfolio. Accelarate event preparations are in progress with a focus on maximizing sales expansion and customer engagement opportunities.</p>
           </li>
         </ul>
         <div class="followup-section">
           <h3>Follow-Up Actions</h3>
           <ul class="followup-list">
-            <li>Submit podcast guest suggestions (especially green/yellow accounts doing innovative work) <span class="owner">All Reps</span></li>
-            <li>Notify Gabe, Nick, or DeAnne of timely ABM campaign opportunities (legislation, funding, leadership changes, competitor issues) <span class="owner">All Reps</span></li>
-            <li>Direct OpenCounter AI marketing asset requests to Linh only if different from existing HighSpot materials <span class="owner">All Reps</span></li>
+            <li><span>Submit podcast guest suggestions — especially from green or yellow accounts doing innovative work — to the marketing team</span> <span class="owner">All Reps</span></li>
+            <li><span>Notify Gabe, Nick, or DeAnne Dodd of timely ABM campaign opportunities (new legislation, funding, leadership changes, competitor issues) in your territory</span> <span class="owner">All Reps</span></li>
           </ul>
         </div>
       </div>
@@ -342,7 +417,7 @@ body { font-family: "Plus Jakarta Sans", system-ui, sans-serif; color: var(--whi
   <!-- Session 7: Philanthropy -->
   <div class="session-card">
     <div class="session-header" onclick="toggle(this)">
-      <div class="session-icon" style="background:rgba(0,206,195,0.15)">&#128690;</div>
+      <div class="session-icon" style="background:rgba(0,206,195,0.1)">&#128690;</div>
       <div class="session-header-text">
         <h2>Wish for Wheels Philanthropy Event</h2>
         <div class="session-speakers">Jeremy Farmer (Wish for Wheels), Liz (Wings for Kids)</div>
@@ -351,44 +426,26 @@ body { font-family: "Plus Jakarta Sans", system-ui, sans-serif; color: var(--whi
     </div>
     <div class="session-body">
       <div class="session-body-inner">
+        <div class="session-summary">Jeremy from Wish for Wheels and Liz from Wings for Kids led a philanthropic bike-building event where the team assembled bikes for underprivileged second graders in Charleston.</div>
         <ul class="takeaway-list">
           <li>
-            <strong>Mission &amp; Impact</strong>
-            <p>Wish for Wheels provides bikes and helmets to Title 1 second graders nationwide. Bike donations improve school attendance and open new opportunities for children in underserved communities.</p>
+            <strong>Organization Mission &amp; Impact</strong>
+            <p>Wish for Wheels provides bikes and helmets to Title 1 second graders nationwide. Jeremy shared stories of how bike donations directly improve school attendance and open new opportunities for children who otherwise have no independent transportation.</p>
           </li>
           <li>
-            <strong>Local Beneficiary</strong>
-            <p>Wings for Kids runs after-school programs in Charleston. The donated bikes expand mobility and experiences for children in the Gadsden Green neighborhood.</p>
+            <strong>Local Beneficiary: Wings for Kids</strong>
+            <p>Liz described Wings for Kids' after-school programs in Charleston and the challenges faced by children in the Gadsden Green neighborhood. The donated bikes will expand their mobility and experiences beyond the immediate neighborhood for the first time.</p>
           </li>
           <li>
-            <strong>Team Build</strong>
-            <p>Teams assembled bikes in a speed challenge with quality control checks. A hands-on team activity that gave back to the local Charleston community.</p>
+            <strong>Team Build Challenge</strong>
+            <p>Jeremy provided step-by-step assembly instructions and organized participants into teams for a speed challenge. Quality control checks were run on every bike before packaging. The activity combined hands-on teamwork with direct community impact in Charleston.</p>
           </li>
         </ul>
       </div>
     </div>
   </div>
 
-  <!-- Additional Follow-Ups -->
-  <div class="session-card">
-    <div class="session-header" onclick="toggle(this)">
-      <div class="session-icon" style="background:rgba(234,198,69,0.15)">&#9989;</div>
-      <div class="session-header-text">
-        <h2>Additional Follow-Up Actions</h2>
-        <div class="session-speakers">Cross-session action items</div>
-      </div>
-      <div class="expand-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
-    </div>
-    <div class="session-body">
-      <div class="session-body-inner">
-        <ul class="followup-list">
-          <li>Coordinate and schedule a Savera AI demo for Allegheny County <span class="owner">Eric, J.K.</span></li>
-          <li>Promote and sell OpenCounter in Canada — now available in that market <span class="owner">Eric</span></li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
+</div>
 </div>
 
 <script>
@@ -399,6 +456,10 @@ function toggle(header) {
     card.classList.remove('open');
     body.style.maxHeight = '0';
   } else {
+    document.querySelectorAll('.session-card.open').forEach(function(c) {
+      c.classList.remove('open');
+      c.querySelector('.session-body').style.maxHeight = '0';
+    });
     card.classList.add('open');
     body.style.maxHeight = body.scrollHeight + 'px';
   }
