@@ -11,7 +11,6 @@
   --deep-blue: #0068BE;
   --light-blue: #00AFF1;
   --teal: #00CEC3;
-  --cool-gray: #D4D8D9;
   --yellow: #EAC645;
   --orange: #EA7445;
   --white: #FFFFFF;
@@ -61,68 +60,106 @@ h1,h2,h3,h4 { font-weight:700; letter-spacing:-0.02em; line-height:1.1; }
 }
 
 .container { max-width: 900px; margin: 0 auto; padding: 0 40px; }
+.timeline { padding: 60px 0 80px; }
 
-.sessions { padding: 60px 0 80px; }
-
-.session-card {
-  margin-bottom: 24px;
-  border: 1px solid rgba(0,0,0,0.06);
-  border-radius: 14px;
-  overflow: hidden;
-  transition: box-shadow 0.25s;
+.agenda-row {
+  display: flex;
+  gap: 20px;
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
 }
-.session-card:hover { box-shadow: 0 4px 24px rgba(0,0,0,0.06); }
-.session-card.open { box-shadow: 0 6px 32px rgba(0,0,0,0.08); }
+.agenda-row:last-child { border-bottom: none; }
 
-.session-header {
-  display: flex; align-items: center; gap: 16px;
-  padding: 20px 24px; cursor: pointer; user-select: none;
-  background: var(--white);
-  transition: background 0.2s;
+.agenda-time {
+  width: 130px;
+  flex-shrink: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--deep-blue);
+  padding-top: 2px;
 }
-.session-header:hover { background: var(--bg-warm); }
-
-.session-icon {
-  width: 46px; height: 46px; border-radius: 12px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 22px; flex-shrink: 0;
+.agenda-time .dur {
+  display: block;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-top: 2px;
 }
 
-.session-header-text { flex: 1; }
-.session-header-text h2 { font-size: 17px; font-weight: 700; color: var(--navy); margin-bottom: 3px; }
-.session-header-text .session-speakers { font-size: 13px; color: var(--text-muted); font-weight: 500; }
+.agenda-content { flex: 1; min-width: 0; }
+.agenda-content h2 {
+  font-size: 16px; font-weight: 700; color: var(--navy);
+  margin-bottom: 2px;
+}
+.agenda-content .speakers {
+  font-size: 13px; color: var(--text-muted); font-weight: 500;
+}
+
+.agenda-row.is-break {
+  opacity: 0.5;
+  padding: 10px 0;
+}
+.agenda-row.is-break h2 {
+  font-size: 13px; font-weight: 600; color: var(--text-muted);
+}
+
+.agenda-row.has-recap { cursor: pointer; }
+.agenda-row.has-recap:hover .agenda-content h2 { color: var(--deep-blue); }
 
 .expand-arrow {
-  width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;
+  width: 26px; height: 26px; display: flex; align-items: center; justify-content: center;
   color: var(--text-muted); transition: transform 0.25s, color 0.2s; flex-shrink: 0;
-  background: var(--sand); border-radius: 50%;
+  background: var(--sand); border-radius: 50%; margin-top: 2px;
 }
-.session-card.open .expand-arrow { transform: rotate(180deg); color: var(--deep-blue); background: rgba(0,104,190,0.1); }
+.agenda-row.open .expand-arrow { transform: rotate(180deg); color: var(--deep-blue); background: rgba(0,104,190,0.1); }
 
-.session-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
-.session-body-inner { padding: 0 24px 28px; }
+.recap-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+.recap-body-inner {
+  padding: 16px 0 24px;
+  margin-left: 150px;
+}
 
-.session-summary {
+.recap-summary {
   font-size: 14px; line-height: 1.7; color: var(--text-secondary);
-  margin-bottom: 20px; padding-bottom: 16px;
+  margin-bottom: 16px; padding-bottom: 12px;
   border-bottom: 1px solid rgba(0,0,0,0.05);
 }
 
-.takeaway-list { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+.takeaway-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
 .takeaway-list li {
-  padding: 14px 18px;
+  padding: 12px 16px;
   background: var(--bg-warm);
   border-left: 3px solid var(--deep-blue);
   border-radius: 0 10px 10px 0;
 }
 .takeaway-list li strong {
-  display: block; font-size: 14px; font-weight: 700;
-  color: var(--navy); margin-bottom: 4px;
+  display: block; font-size: 13px; font-weight: 700;
+  color: var(--navy); margin-bottom: 3px;
 }
 .takeaway-list li p {
-  font-size: 13px; line-height: 1.65; color: var(--text-secondary);
+  font-size: 12.5px; line-height: 1.65; color: var(--text-secondary);
 }
 
+.sub-topic {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(0,0,0,0.05);
+}
+.sub-topic-title {
+  font-size: 14px; font-weight: 700; color: var(--deep-blue);
+  margin-bottom: 4px;
+}
+.sub-topic-speakers {
+  font-size: 12px; color: var(--text-muted); margin-bottom: 10px;
+}
+
+.agenda-row.evening {
+  background: rgba(234,198,69,0.04);
+  margin: 0 -20px;
+  padding: 16px 20px;
+  border-radius: 10px;
+  border-bottom: none;
+}
 </style>
 </head>
 <body>
@@ -137,615 +174,257 @@ h1,h2,h3,h4 { font-weight:700; letter-spacing:-0.02em; line-height:1.1; }
 </div>
 
 <div class="container">
-<div class="sessions">
+<div class="timeline">
 
-  <!-- Session 1: AI Transformation -->
-  <div class="session-card">
-    <div class="session-header" onclick="toggle(this)">
-      <div class="session-icon" style="background:rgba(0,175,241,0.1)">&#129302;</div>
-      <div class="session-header-text">
-        <h2>AI Transformation in Enterprise Sales</h2>
-        <div class="session-speakers">Noam Reininger, Matt Donovan, Eric McCauley, Mike Schwab, Clint Knittle</div>
-      </div>
-      <div class="expand-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+  <!-- 2:00 - 2:30 PM: Welcome -->
+  <div class="agenda-row">
+    <div class="agenda-time">2:00 &ndash; 2:30 PM<span class="dur">30 min</span></div>
+    <div class="agenda-content">
+      <h2>Welcome To SKO FY27</h2>
+      <div class="speakers">Alex Newman, CRO</div>
     </div>
-    <div class="session-body">
-      <div class="session-body-inner">
-        <div class="session-summary">Leadership discussed the profound impact of AI on enterprise sales, emphasizing the shift from relationship-based selling to strategic advisory roles, outcome-driven conversations, and ecosystem optimization.</div>
+  </div>
+
+  <!-- 2:30 - 3:00 PM: State of the Union -->
+  <div class="agenda-row has-recap" onclick="toggle(this)">
+    <div class="agenda-time">2:30 &ndash; 3:00 PM<span class="dur">30 min</span></div>
+    <div class="agenda-content">
+      <h2>State of the Union</h2>
+      <div class="speakers">Noam Reininger, CEO</div>
+    </div>
+    <div class="expand-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+  </div>
+  <div class="recap-body">
+    <div class="recap-body-inner">
+
+      <div class="sub-topic-title">AI Transformation in Enterprise Sales</div>
+      <div class="sub-topic-speakers">Noam Reininger, Matt Donovan, Eric McCauley, Mike Schwab, Clint Knittle</div>
+      <div class="recap-summary">Leadership discussed the profound impact of AI on enterprise sales, emphasizing the shift from relationship-based selling to strategic advisory roles, outcome-driven conversations, and ecosystem optimization.</div>
+      <ul class="takeaway-list">
+        <li><strong>Shift to Strategic Advisory</strong><p>Matt Donovan explained that the biggest change in sales is the move from relationship builder to strategic advisor. Buyers now expect a deep understanding of staffing, budget pressures, and mission goals — this is what builds executive trust.</p></li>
+        <li><strong>Outcome-Focused Selling</strong><p>Tom and Sarah highlighted the transition from solution selling to outcome architecture. Top reps focus on delivering measurable results — faster permit approvals, improved citizen experiences — rather than listing software features.</p></li>
+        <li><strong>Intelligence Over Information</strong><p>Mike Schwab noted that AI has leveled the playing field by making information widely available. The best reps now arrive with intelligence — understanding customer priorities and likely objections before meetings.</p></li>
+        <li><strong>Quantifying Value</strong><p>Eric McCauley described how elite reps differentiate by quantifying the impact of delays, lost productivity, and revenue leakage — shifting the conversation from price to visible value.</p></li>
+        <li><strong>Ecosystem Optimization</strong><p>Clint Knittle discussed how CIOs now evaluate technology based on integration and ecosystem fit. Successful reps help optimize across departments rather than selling into a single use case.</p></li>
+      </ul>
+
+      <div class="sub-topic">
+        <div class="sub-topic-title">Accela Product Roadmap &amp; Platform Strategy</div>
+        <div class="sub-topic-speakers">Noam Reininger</div>
+        <div class="recap-summary">Noam provided an in-depth overview of Accela's product roadmap, acquisition strategy, and platform enhancements, including AI capabilities, new product launches, and the focus on reducing total cost of ownership.</div>
         <ul class="takeaway-list">
-          <li>
-            <strong>Shift to Strategic Advisory</strong>
-            <p>Matt Donovan explained that the biggest change in sales is the move from relationship builder to strategic advisor. Buyers now expect a deep understanding of staffing, budget pressures, and mission goals — this is what builds executive trust, not golf outings and dinners.</p>
-          </li>
-          <li>
-            <strong>Outcome-Focused Selling</strong>
-            <p>Tom and Cary highlighted the transition from solution selling to outcome architecture. Top reps focus on delivering measurable results — faster permit approvals, improved citizen experiences, reduced processing times — rather than listing software features. The conversation has to center on what the agency gets, not what the platform does.</p>
-          </li>
-          <li>
-            <strong>Intelligence Over Information</strong>
-            <p>Mike Schwab noted that AI has leveled the playing field by making information widely available. The best reps now arrive with intelligence — understanding customer priorities, internal politics, and likely objections before meetings — which elevates the quality of every conversation.</p>
-          </li>
-          <li>
-            <strong>Quantifying Value</strong>
-            <p>Eric McCauley described how elite reps differentiate themselves by quantifying the impact of delays, lost productivity, and revenue leakage. When you shift the conversation from price to visible value and measurable outcomes, budget objections shrink and urgency increases.</p>
-          </li>
-          <li>
-            <strong>Ecosystem Optimization</strong>
-            <p>Clint Knittle discussed how CIOs now evaluate technology based on integration and ecosystem fit, not standalone features. Successful reps help customers optimize across departments rather than selling into a single use case — the broader the footprint, the stickier the deal.</p>
-          </li>
+          <li><strong>Acquisition &amp; Integration Strategy</strong><p>Noam detailed the rationale behind acquiring OpenCounter, ePermitHub, Novotx, and Savera AI — each acquisition strengthens the end-to-end platform and accelerates implementation for customers.</p></li>
+          <li><strong>AI-Enabled Product Launches</strong><p>OpenCounter AI is rolling out now. ePermitHub Auto Plan Review enters pilot in August with GA in December. AI 311 is in active development. Savera AI will transition from PS tooling to product integration after safety guardrails are validated.</p></li>
+          <li><strong>Reducing Total Cost of Ownership</strong><p>Noam emphasized lowering TCO by leveraging AI for automatic configuration and real-time adaptation to new regulations — a direct response to budget-constrained government buyers.</p></li>
+          <li><strong>Competitive Landscape</strong><p>Against OpenGov, Tyler, and Clarity — Accela's differentiation is specialized government workflows, full platform ownership, and outcomes-driven expertise over broad horizontal expansion.</p></li>
+          <li><strong>Platform Stability &amp; Team Changes</strong><p>After reviewing platform outages, Noam described bringing in Jim White and consolidating product and technology leadership under Sam Ada for execution discipline — fewer outages, faster releases.</p></li>
         </ul>
       </div>
     </div>
   </div>
 
-  <!-- Session 2: Product Roadmap -->
-  <div class="session-card">
-    <div class="session-header" onclick="toggle(this)">
-      <div class="session-icon" style="background:rgba(0,206,195,0.1)">&#128640;</div>
-      <div class="session-header-text">
-        <h2>Accela Product Roadmap &amp; Platform Strategy</h2>
-        <div class="session-speakers">Noam Reininger</div>
-      </div>
-      <div class="expand-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+  <!-- 3:00 - 4:15 PM: Philanthropy -->
+  <div class="agenda-row has-recap" onclick="toggle(this)">
+    <div class="agenda-time">3:00 &ndash; 4:15 PM<span class="dur">1 hr 15 min</span></div>
+    <div class="agenda-content">
+      <h2>Philanthropy / Team Build</h2>
+      <div class="speakers">Jeremy Farmer (Wish for Wheels), Liz (Wings for Kids)</div>
     </div>
-    <div class="session-body">
-      <div class="session-body-inner">
-        <div class="session-summary">Noam provided an in-depth overview of Accela's product roadmap, acquisition strategy, and platform enhancements, including AI capabilities, new product launches, and the focus on reducing total cost of ownership.</div>
+    <div class="expand-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+  </div>
+  <div class="recap-body">
+    <div class="recap-body-inner">
+      <div class="recap-summary">Jeremy from Wish for Wheels and Liz from Wings for Kids led a philanthropic bike-building event where the team assembled bikes for underprivileged second graders in Charleston.</div>
+      <ul class="takeaway-list">
+        <li><strong>Organization Mission &amp; Impact</strong><p>Wish for Wheels provides bikes and helmets to Title 1 second graders nationwide. Jeremy shared stories of how bike donations directly improve school attendance and open new opportunities for children.</p></li>
+        <li><strong>Local Beneficiary: Wings for Kids</strong><p>Liz described Wings for Kids' after-school programs in Charleston and the challenges faced by children in the Gadsden Green neighborhood. The donated bikes will expand their mobility and experiences.</p></li>
+        <li><strong>Team Build Challenge</strong><p>Jeremy organized participants into teams for a speed challenge with step-by-step assembly instructions. Quality control checks were run on every bike before packaging.</p></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Break -->
+  <div class="agenda-row is-break">
+    <div class="agenda-time">4:15 &ndash; 4:30 PM<span class="dur">15 min</span></div>
+    <div class="agenda-content"><h2>Break</h2></div>
+  </div>
+
+  <!-- 4:30 - 4:50 PM: Public Portal -->
+  <div class="agenda-row has-recap" onclick="toggle(this)">
+    <div class="agenda-time">4:30 &ndash; 4:50 PM<span class="dur">20 min</span></div>
+    <div class="agenda-content">
+      <h2>Product: Public Portal Update</h2>
+      <div class="speakers">Joshua Hamaker</div>
+    </div>
+    <div class="expand-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+  </div>
+  <div class="recap-body">
+    <div class="recap-body-inner">
+      <div class="recap-summary">Joshua presented updates on public portal adoption metrics, growth initiatives for FY27, and the feature roadmap, while addressing questions about super agency support, SSO, and content management.</div>
+      <ul class="takeaway-list">
+        <li><strong>Adoption Metrics &amp; Goals</strong><p>Customer satisfaction score of 4.2 and ease-of-use score of 4.6. Currently 9 customers in production, 46 in non-production, and 123 in staging. FY27 targets: 86 live customers in production and 275 in non-production.</p></li>
+        <li><strong>Growth Initiatives</strong><p>Continued on-site and virtual white glove services, monthly office hours, and targeted training sessions to drive adoption, focusing on both feature education and customer communication strategies.</p></li>
+        <li><strong>Feature Roadmap</strong><p>Key upcoming features: support for Canada, SSO, vanity URLs, OpenCounter direct connect, APAC support, enhanced user management, restyled page flow, record details, super agency support, and content pages. Q1 focus is on stability.</p></li>
+        <li><strong>Super Agency &amp; Content Pages</strong><p>Super agency support will include seamless integration with OpenCounter. Restyled page flow covers application process steps, while content pages allow agencies to insert custom content.</p></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 4:50 - 5:10 PM: OpenCounter AI -->
+  <div class="agenda-row has-recap" onclick="toggle(this)">
+    <div class="agenda-time">4:50 &ndash; 5:10 PM<span class="dur">20 min</span></div>
+    <div class="agenda-content">
+      <h2>Product: OpenCounter Digital Assistant</h2>
+      <div class="speakers">Linh Vuong</div>
+    </div>
+    <div class="expand-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+  </div>
+  <div class="recap-body">
+    <div class="recap-body-inner">
+      <div class="recap-summary">Linh provided a comprehensive overview of the OpenCounter AI Digital Assistant — its technical underpinnings, early adopter results, agency concerns, and strategies for broader adoption.</div>
+      <ul class="takeaway-list">
+        <li><strong>AI Implementation &amp; User Experience</strong><p>OpenCounter AI enhances the permit guide process by collecting richer applicant context through conversational input. 75% of users choose AI over traditional flows, with 80% completion rates among early adopters.</p></li>
+        <li><strong>Safety, Security &amp; Human Oversight</strong><p>The AI avoids hallucinations by relying strictly on agency-configured rules. Staff can review and adjust guides at any time. Passed third-party pen testing with zero findings. Uses Anthropic models and does not train on agency data.</p></li>
+        <li><strong>Agency Adoption Challenges</strong><p>Cincinnati successfully adopted the AI assistant. Orlando and Detroit paused due to internal policy and leadership changes — not product issues. Executive buy-in and clear AI policies are prerequisites for sustained adoption.</p></li>
+        <li><strong>Implementation Speed</strong><p>If the agency's rules engine is already configured, OpenCounter AI can be implemented in approximately two hours. Staff complete a short training course before going live.</p></li>
+        <li><strong>Future Roadmap</strong><p>Upcoming: Permit Guide Essentials (down-market offering), replacement of Velocimo integration, fee calculators, and deeper integration with ePermitHub for plan review requirements.</p></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 5:10 - 5:30 PM: SecurePay -->
+  <div class="agenda-row has-recap" onclick="toggle(this)">
+    <div class="agenda-time">5:10 &ndash; 5:30 PM<span class="dur">20 min</span></div>
+    <div class="agenda-content">
+      <h2>Product: SecurePay + Obeya Room</h2>
+      <div class="speakers">Linh Vuong, Tammy Cohen</div>
+    </div>
+    <div class="expand-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+  </div>
+  <div class="recap-body">
+    <div class="recap-body-inner">
+      <div class="recap-summary">Linh and Tammy introduced Secure Pay — its integration into the Accela platform, onboarding process, technical requirements, early adopter program, and financial impact.</div>
+      <ul class="takeaway-list">
+        <li><strong>Product Overview</strong><p>Secure Pay is a fully integrated payment solution within Accela, eliminating third-party redirects and providing centralized transaction reconciliation. PCI Level 1 compliant using a payment facilitator model.</p></li>
+        <li><strong>Early Adopter Program</strong><p>20 early adopter slots available with four-week white glove onboarding. Priority goes to agencies previously using Velocimo. Reps should identify eligible customers and have them complete the eligibility survey.</p></li>
+        <li><strong>Technical &amp; Contractual Requirements</strong><p>Agencies must switch to WorldPay as merchant of record and sign a sub-merchant agreement. PayPal is not supported. Set expectations with customers early.</p></li>
+        <li><strong>Financial Impact</strong><p>Sample calculation for Fresno demonstrated how Secure Pay generates revenue based on transaction volume. Use the calculator to qualify — not every agency will pencil out.</p></li>
+        <li><strong>Roadmap &amp; GA Timeline</strong><p>General availability planned for fall. Upcoming: back office shopping cart, multi-merchant IDs, vanity URLs, self-service onboarding, refunds, and device support.</p></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 5:30 - 6:15 PM: Marketing + Accelarate -->
+  <div class="agenda-row has-recap" onclick="toggle(this)">
+    <div class="agenda-time">5:30 &ndash; 6:15 PM<span class="dur">45 min</span></div>
+    <div class="agenda-content">
+      <h2>Marketing + Accelarate</h2>
+      <div class="speakers">Gabe Graham, Sarah Thorowgood, Matt Donovan, Angela Holden</div>
+    </div>
+    <div class="expand-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+  </div>
+  <div class="recap-body">
+    <div class="recap-body-inner">
+
+      <div class="sub-topic-title">Marketing Strategy &amp; FY27 Initiatives</div>
+      <div class="sub-topic-speakers">Gabe Graham, Sarah Thorowgood</div>
+      <div class="recap-summary">Gabe and Sarah outlined marketing achievements from FY26, pipeline goals for FY27, AI integration into marketing operations, and upcoming campaigns including Accelarate.</div>
+      <ul class="takeaway-list">
+        <li><strong>FY26 Performance &amp; FY27 Targets</strong><p>BDRs generated $15.5M and marketing generated $11.6M in pipeline in FY26, exceeding targets. FY27 goal: $29M in new logo pipeline — nearly doubling combined output with AI-driven efficiencies.</p></li>
+        <li><strong>AI-Driven Marketing</strong><p>AI tools being used to personalize outreach at scale, conduct account research, and drive efficiency. Plans to meet increased targets without proportional budget increases.</p></li>
+        <li><strong>Quarterly Themes</strong><p>Civic AI, end-to-end platform stories, resident experience, and connected operations — each aligned with product launches and market readiness windows.</p></li>
+        <li><strong>ABM &amp; Podcast</strong><p>Reps encouraged to propose account-based marketing campaigns and podcast guests. Successful ABM examples in Georgia and Pennsylvania drove significant pipeline. The Civic Innovators Podcast is a powerful relationship-building tool.</p></li>
+        <li><strong>Branding &amp; Accelarate Prep</strong><p>Efforts underway to streamline product branding and naming conventions. Accelarate preparations focused on maximizing sales expansion and customer engagement opportunities.</p></li>
+      </ul>
+
+      <div class="sub-topic">
+        <div class="sub-topic-title">Trade Show Strategy &amp; Reporting</div>
+        <div class="sub-topic-speakers">Sarah Thorowgood</div>
         <ul class="takeaway-list">
-          <li>
-            <strong>Acquisition &amp; Integration Strategy</strong>
-            <p>Noam detailed the rationale behind acquiring OpenCounter, ePermitHub, Novotx, and Savera AI — each acquisition strengthens the end-to-end platform and accelerates implementation for customers. The goal is a fully integrated suite, not a collection of bolted-on products.</p>
-          </li>
-          <li>
-            <strong>AI-Enabled Product Launches</strong>
-            <p>OpenCounter AI is rolling out now. ePermitHub Auto Plan Review enters pilot in August with GA in December. AI 311 is in active development. Savera AI will transition from professional services tooling to product integration after safety guardrails are established and validated.</p>
-          </li>
-          <li>
-            <strong>Reducing Total Cost of Ownership</strong>
-            <p>Noam emphasized the strategic goal of lowering TCO by leveraging AI for automatic configuration and real-time adaptation to new regulations. This makes the platform more accessible and cost-effective for agencies — a direct response to budget-constrained government buyers.</p>
-          </li>
-          <li>
-            <strong>Competitive Landscape</strong>
-            <p>Against OpenGov, Tyler, and Clarity — Accela's differentiation is specialized government workflows, full platform ownership, and outcomes-driven expertise. Competitors are expanding horizontally into government; Accela goes deeper into the workflows that matter most.</p>
-          </li>
-          <li>
-            <strong>Platform Stability &amp; Team Changes</strong>
-            <p>After reviewing platform outages and architectural issues, Noam described the decision to bring in Jim White and consolidate product and technology leadership under Sam Ada. This is about execution discipline — fewer outages, faster releases, more predictable delivery.</p>
-          </li>
+          <li><strong>Calendar Overview</strong><p>90 trade shows scheduled for the next year, including 27 new asset management trade shows with Novotx. Careful selection is critical to maximize ROI.</p></li>
+          <li><strong>Reporting Requirements</strong><p>Attendance is contingent on timely reporting of leads and outcomes within 48 hours post-show. New lead retrieval software and AI-driven reporting in development. No reports = no future attendance.</p></li>
+        </ul>
+      </div>
+
+      <div class="sub-topic">
+        <div class="sub-topic-title">Accelarate Registration &amp; Goals</div>
+        <div class="sub-topic-speakers">Sarah Thorowgood</div>
+        <ul class="takeaway-list">
+          <li><strong>Registration Status</strong><p>At 298 attendees and 111 agencies, with a goal of 210 agencies and 600 attendees. Registration has plateaued — significant push needed.</p></li>
+          <li><strong>Regional Targets</strong><p>Minimum 15% agency registration per rep. 20-25% is attainable, 30-40% is strong. Angela sending dashboard link for reps to identify unregistered agencies.</p></li>
+          <li><strong>Outreach Challenge</strong><p>Each participant must email three targeted unregistered agencies by Friday. Prize incentive for those who convert all three.</p></li>
+        </ul>
+      </div>
+
+      <div class="sub-topic">
+        <div class="sub-topic-title">Accelarate Logistics &amp; Agenda</div>
+        <div class="sub-topic-speakers">Sarah Thorowgood, Matt Donovan</div>
+        <ul class="takeaway-list">
+          <li><strong>Conference Schedule</strong><p>Spans two full days and two half days. Reps should share the agenda with customers to encourage attendance and help them plan sessions.</p></li>
+          <li><strong>Hotel Layout &amp; Meetings</strong><p>Session rooms, Accela U training areas, expo space — know the layout for scheduling customer meetings. Matt cited past examples like Cleveland and FDNY for scheduling executive meetings during the event.</p></li>
+          <li><strong>Mobile App &amp; AI Matchmaking</strong><p>New app lets attendees input interests for AI-powered matchmaking with relevant customers and product managers. Universal lead retrieval built in for pipeline tracking.</p></li>
+          <li><strong>Expo &amp; Partners</strong><p>Expo investment increased from $30K to $150K+ with new labs, solution stations, and marketing activities. Angela secured partner support covering ~25% of event expenses.</p></li>
+          <li><strong>Keynote Speakers &amp; Events</strong><p>Noel Russell (AI Leadership Institute) and John Dorenbos. Trendsetter Awards Luncheon, Birds of a Feather, Community Live, and the Accelebration at the Fillmore featuring the Spin Doctors.</p></li>
+          <li><strong>CIO Roundtable</strong><p>Second full day, facilitated by Bob Leake and Amber with guest Terry Takai. 32 customer-led, 22 Accela-led, and 11 Accela U breakout sessions.</p></li>
+          <li><strong>Gov for Good</strong><p>Partnership with Nolivate Black aimed at giving back to the New Orleans community and offsetting the environmental impact of the event.</p></li>
+          <li><strong>Travel &amp; Expenses</strong><p>Do not book flights until approved. Select "user conference" on Concur workspace. Staff shuttles provided for Monday arrivals to reduce transportation costs.</p></li>
         </ul>
       </div>
     </div>
   </div>
 
-  <!-- Session 3: Public Portal -->
-  <div class="session-card">
-    <div class="session-header" onclick="toggle(this)">
-      <div class="session-icon" style="background:rgba(0,104,190,0.1)">&#127760;</div>
-      <div class="session-header-text">
-        <h2>Public Portal &amp; Customer Adoption</h2>
-        <div class="session-speakers">Joshua Hamaker</div>
-      </div>
-      <div class="expand-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+  <!-- 6:15 - 6:25 PM: Kahoot -->
+  <div class="agenda-row has-recap" onclick="toggle(this)">
+    <div class="agenda-time">6:15 &ndash; 6:25 PM<span class="dur">10 min</span></div>
+    <div class="agenda-content">
+      <h2>Kahoot Quiz: Civic AI Positioning</h2>
+      <div class="speakers">Ryan Kuykendall</div>
     </div>
-    <div class="session-body">
-      <div class="session-body-inner">
-        <div class="session-summary">Joshua presented updates on public portal adoption metrics, growth initiatives for FY27, and the feature roadmap, while addressing questions about super agency support, SSO, and content management.</div>
-        <ul class="takeaway-list">
-          <li>
-            <strong>Adoption Metrics &amp; Goals</strong>
-            <p>Customer satisfaction score of 4.2 and ease-of-use score of 4.6 for the new public portal. Currently 9 customers in production, 46 in non-production, and 123 in staging. FY27 targets: 86 live customers in production and 275 in non-production.</p>
-          </li>
-          <li>
-            <strong>Growth Initiatives</strong>
-            <p>Continued on-site and virtual white glove services, monthly office hours, and targeted training sessions to drive adoption. Focus is on both feature education and helping customers communicate the change to their residents and applicants.</p>
-          </li>
-          <li>
-            <strong>Feature Roadmap</strong>
-            <p>Key upcoming features: support for Canada, SSO, vanity URLs, OpenCounter direct connect, APAC support, enhanced user management, restyled page flow, record details, super agency support, and content pages. Q1 focus is on stability and quality of service.</p>
-          </li>
-          <li>
-            <strong>Super Agency &amp; Content Pages</strong>
-            <p>Super agency support will include seamless integration with OpenCounter. Restyled page flow covers application process steps, while content pages allow agencies to insert custom content. Both are distinct capabilities on the roadmap.</p>
-          </li>
-        </ul>
-      </div>
+    <div class="expand-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+  </div>
+  <div class="recap-body">
+    <div class="recap-body-inner">
+      <div class="recap-summary">Ryan led a Kahoot quiz covering Accela product marketing, Civic AI positioning, and competitive differentiation.</div>
+      <ul class="takeaway-list">
+        <li><strong>Civic AI Messaging</strong><p>Quiz covered Civic AI's embedded approach, how it augments staff judgment rather than replacing it, grounding in agency data, and competitive advantages over alternative solutions.</p></li>
+        <li><strong>Competitive Positioning</strong><p>Questions covered Accela's configuration-over-customization approach, platform strategy, public portal accessibility, and differentiation against OpenGov and Granicus.</p></li>
+      </ul>
     </div>
   </div>
 
-  <!-- Session 4: OpenCounter AI -->
-  <div class="session-card">
-    <div class="session-header" onclick="toggle(this)">
-      <div class="session-icon" style="background:rgba(234,198,69,0.1)">&#128161;</div>
-      <div class="session-header-text">
-        <h2>OpenCounter AI Digital Assistant</h2>
-        <div class="session-speakers">Linh Vuong</div>
-      </div>
-      <div class="expand-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
-    </div>
-    <div class="session-body">
-      <div class="session-body-inner">
-        <div class="session-summary">Linh provided a comprehensive overview of the OpenCounter AI Digital Assistant — its technical underpinnings, early adopter results, agency concerns, and strategies for broader adoption.</div>
-        <ul class="takeaway-list">
-          <li>
-            <strong>AI Implementation &amp; User Experience</strong>
-            <p>OpenCounter AI enhances the permit guide process by collecting richer applicant context through conversational input. 75% of users choose AI over traditional flows, with 80% completion rates among early adopters. The AI doesn't replace the permit guide — it makes it smarter and more personalized.</p>
-          </li>
-          <li>
-            <strong>Safety, Security &amp; Human Oversight</strong>
-            <p>The AI avoids hallucinations by relying strictly on agency-configured rules — it doesn't make things up. Staff can review and adjust AI-generated guides at any time. The system passed third-party penetration testing with zero findings. Uses prompt engineering with Anthropic models and does not train on agency data.</p>
-          </li>
-          <li>
-            <strong>Agency Adoption Challenges</strong>
-            <p>Cincinnati successfully adopted the AI assistant and is seeing strong results. Orlando and Detroit paused deployments due to internal policy and leadership changes — not product issues. Key learning: executive buy-in and clear organizational AI policies are prerequisites for sustained adoption.</p>
-          </li>
-          <li>
-            <strong>Implementation Speed</strong>
-            <p>If the agency's rules engine is already configured, OpenCounter AI can be implemented in approximately two hours. Staff complete a short training course before going live. The barrier is organizational readiness, not technical complexity.</p>
-          </li>
-          <li>
-            <strong>Future Roadmap</strong>
-            <p>Upcoming: Permit Guide Essentials (down-market offering), replacement of Velocimo integration, fee calculators, and deeper integration with ePermitHub for plan review requirements. The vision is AI-assisted from first inquiry through plan review.</p>
-          </li>
-        </ul>
-      </div>
+  <!-- 6:25 - 6:30 PM: Close -->
+  <div class="agenda-row">
+    <div class="agenda-time">6:25 &ndash; 6:30 PM<span class="dur">5 min</span></div>
+    <div class="agenda-content">
+      <h2>Day 1 Close</h2>
+      <div class="speakers">Alex Newman</div>
     </div>
   </div>
 
-  <!-- Session 5: Secure Pay -->
-  <div class="session-card">
-    <div class="session-header" onclick="toggle(this)">
-      <div class="session-icon" style="background:rgba(0,175,241,0.1)">&#128179;</div>
-      <div class="session-header-text">
-        <h2>Secure Pay Product Launch &amp; Onboarding</h2>
-        <div class="session-speakers">Linh Vuong, Tammy Cohen</div>
-      </div>
-      <div class="expand-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+  <!-- 7:30 - 9:00 PM: Awards -->
+  <div class="agenda-row has-recap evening" onclick="toggle(this)">
+    <div class="agenda-time">7:30 &ndash; 9:00 PM<span class="dur">1.5 hrs</span></div>
+    <div class="agenda-content">
+      <h2>Awards Dinner &amp; Ceremony</h2>
+      <div class="speakers">Matt Donovan, Tom Henke, Clint Knittle, Jason Jordan, Gabe Graham, Gary Zepke, Nick Gough</div>
     </div>
-    <div class="session-body">
-      <div class="session-body-inner">
-        <div class="session-summary">Linh and Tammy introduced Secure Pay — its integration into the Accela platform, onboarding process, technical requirements, early adopter program, and financial impact for agencies and Accela.</div>
-        <ul class="takeaway-list">
-          <li>
-            <strong>Product Overview</strong>
-            <p>Secure Pay is a fully integrated payment solution within Accela, eliminating third-party redirects and providing a centralized hub for transaction reconciliation. End-to-end experience from the applicant's perspective — no leaving the Accela portal to pay. PCI Level 1 compliant using a payment facilitator model.</p>
-          </li>
-          <li>
-            <strong>Early Adopter Program</strong>
-            <p>20 early adopter slots available. Four-week white glove onboarding service with Payrix configuration. Priority goes to agencies previously using Velocimo. Reps should identify eligible customers and have them complete the eligibility survey.</p>
-          </li>
-          <li>
-            <strong>Technical &amp; Contractual Requirements</strong>
-            <p>Agencies must switch to WorldPay as the merchant of record and sign a sub-merchant agreement. PayPal is not supported with Secure Pay. These are non-negotiable requirements — set expectations with customers early in the conversation.</p>
-          </li>
-          <li>
-            <strong>Financial Impact &amp; Revenue Calculation</strong>
-            <p>A sample calculation for Fresno demonstrated how Secure Pay generates revenue for Accela based on transaction volume. Guidance was provided on evaluating financial viability for specific accounts — not every agency will pencil out, so use the calculator to qualify.</p>
-          </li>
-          <li>
-            <strong>Roadmap &amp; GA Timeline</strong>
-            <p>General availability planned for fall. Upcoming features: back office shopping cart, multi-merchant IDs, vanity URLs, self-service onboarding, and expanded financial capabilities including refunds and device support.</p>
-          </li>
-        </ul>
-      </div>
-    </div>
+    <div class="expand-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
   </div>
-
-  <!-- Session 6: Marketing -->
-  <div class="session-card">
-    <div class="session-header" onclick="toggle(this)">
-      <div class="session-icon" style="background:rgba(234,116,69,0.1)">&#128226;</div>
-      <div class="session-header-text">
-        <h2>Marketing Strategy &amp; FY27 Initiatives</h2>
-        <div class="session-speakers">Gabe Graham, Sarah Thorowgood</div>
-      </div>
-      <div class="expand-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
-    </div>
-    <div class="session-body">
-      <div class="session-body-inner">
-        <div class="session-summary">Gabe and Sarah outlined marketing achievements from FY26, ambitious pipeline goals for FY27, the integration of AI into marketing operations, and upcoming campaigns and events including Accelarate.</div>
-        <ul class="takeaway-list">
-          <li>
-            <strong>FY26 Performance &amp; FY27 Targets</strong>
-            <p>BDRs generated $15.5M and marketing generated $11.6M in pipeline in FY26, exceeding targets. FY27 goal: $29M in new logo pipeline — nearly doubling the combined output. Supported by team expansion and AI-driven efficiencies. The expectation is to do more with the same budget by leveraging AI across outreach, research, and campaign execution.</p>
-          </li>
-          <li>
-            <strong>AI-Driven Marketing &amp; Campaigns</strong>
-            <p>AI tools are being used to personalize outreach at scale, conduct account research, and drive efficiency in both BDR and marketing activities. Plans to leverage AI further to meet increased targets without proportional budget increases — the productivity gain is the strategy.</p>
-          </li>
-          <li>
-            <strong>Quarterly Themes &amp; Messaging</strong>
-            <p>Marketing will focus on quarterly themes: Civic AI, end-to-end platform stories, resident experience, and connected operations. Each theme aligns with product launches and market readiness windows. Reps should align their outbound messaging to these themes for consistency.</p>
-          </li>
-          <li>
-            <strong>Account-Based Marketing &amp; Podcast</strong>
-            <p>Reps are encouraged to propose account-based marketing campaigns and podcast guests. Successful ABM examples in Georgia and Pennsylvania drove significant pipeline. The Civic Innovators Podcast is a powerful storytelling and relationship-building tool — especially for green and yellow accounts doing innovative work.</p>
-          </li>
-          <li>
-            <strong>Branding &amp; Accelarate Prep</strong>
-            <p>Efforts underway to streamline product branding and naming conventions for clarity across the growing portfolio. Accelarate event preparations are in progress with a focus on maximizing sales expansion and customer engagement opportunities.</p>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  <!-- Session 7: Philanthropy -->
-  <div class="session-card">
-    <div class="session-header" onclick="toggle(this)">
-      <div class="session-icon" style="background:rgba(0,206,195,0.1)">&#128690;</div>
-      <div class="session-header-text">
-        <h2>Wish for Wheels Philanthropy Event</h2>
-        <div class="session-speakers">Jeremy Farmer (Wish for Wheels), Liz (Wings for Kids)</div>
-      </div>
-      <div class="expand-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
-    </div>
-    <div class="session-body">
-      <div class="session-body-inner">
-        <div class="session-summary">Jeremy from Wish for Wheels and Liz from Wings for Kids led a philanthropic bike-building event where the team assembled bikes for underprivileged second graders in Charleston.</div>
-        <ul class="takeaway-list">
-          <li>
-            <strong>Organization Mission &amp; Impact</strong>
-            <p>Wish for Wheels provides bikes and helmets to Title 1 second graders nationwide. Jeremy shared stories of how bike donations directly improve school attendance and open new opportunities for children who otherwise have no independent transportation.</p>
-          </li>
-          <li>
-            <strong>Local Beneficiary: Wings for Kids</strong>
-            <p>Liz described Wings for Kids' after-school programs in Charleston and the challenges faced by children in the Gadsden Green neighborhood. The donated bikes will expand their mobility and experiences beyond the immediate neighborhood for the first time.</p>
-          </li>
-          <li>
-            <strong>Team Build Challenge</strong>
-            <p>Jeremy provided step-by-step assembly instructions and organized participants into teams for a speed challenge. Quality control checks were run on every bike before packaging. The activity combined hands-on teamwork with direct community impact in Charleston.</p>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  <!-- Session 8: Trade Show Strategy -->
-  <div class="session-card">
-    <div class="session-header" onclick="toggle(this)">
-      <div class="session-icon" style="background:rgba(0,104,190,0.1)">&#127914;</div>
-      <div class="session-header-text">
-        <h2>Trade Show Strategy &amp; Reporting Requirements</h2>
-        <div class="session-speakers">Cary Phillips</div>
-      </div>
-      <div class="expand-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
-    </div>
-    <div class="session-body">
-      <div class="session-body-inner">
-        <div class="session-summary">Cary led a discussion on the upcoming year's trade show calendar, emphasizing smart show selection, reporting requirements, and the addition of new asset management trade shows with Novotx.</div>
-        <ul class="takeaway-list">
-          <li>
-            <strong>Trade Show Calendar Overview</strong>
-            <p>The team has 90 trade shows scheduled for the next year, including 27 new asset management trade shows with Novotx. Careful selection is critical to maximize return on investment across all regions.</p>
-          </li>
-          <li>
-            <strong>Reporting &amp; Lead Retrieval</strong>
-            <p>Attendance at trade shows is contingent on timely reporting of leads and outcomes. A new lead retrieval software and AI-driven reporting system is in development, but reporting must continue within 48 hours post-show until the new system is implemented.</p>
-          </li>
-          <li>
-            <strong>ROI-Driven Participation</strong>
-            <p>Only shows with proven ROI will be attended. Sales reps must provide reporting and leads within 48 hours post-show to justify continued participation. No reports, no future attendance.</p>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  <!-- Session 9: Accelarate Registration -->
-  <div class="session-card">
-    <div class="session-header" onclick="toggle(this)">
-      <div class="session-icon" style="background:rgba(234,198,69,0.1)">&#128203;</div>
-      <div class="session-header-text">
-        <h2>Accelarate Conference Registration &amp; Goals</h2>
-        <div class="session-speakers">Cary Phillips</div>
-      </div>
-      <div class="expand-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
-    </div>
-    <div class="session-body">
-      <div class="session-body-inner">
-        <div class="session-summary">Cary presented current registration numbers for Accelarate, outlined participation goals, and called on the team to increase outreach and registration efforts before the closing deadline.</div>
-        <ul class="takeaway-list">
-          <li>
-            <strong>Registration Status &amp; Targets</strong>
-            <p>Registration is at 298 attendees and 111 agencies, with a goal of 210 agencies and 600 attendees. Registration started earlier than previous years but has plateaued — significant push needed to hit targets.</p>
-          </li>
-          <li>
-            <strong>Regional Performance &amp; Minimums</strong>
-            <p>Cary compared registration percentages by region and set a minimum acceptable target of 15% agency registration per rep, with 20-25% attainable and 30-40% considered strong performance.</p>
-          </li>
-          <li>
-            <strong>Action Plan</strong>
-            <p>Angela was tasked with sending a dashboard link for reps to identify unregistered agencies. Everyone was instructed to select three agencies to target for registration, with messaging support and incentives for successful outreach.</p>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  <!-- Session 10: Accelarate Logistics -->
-  <div class="session-card">
-    <div class="session-header" onclick="toggle(this)">
-      <div class="session-icon" style="background:rgba(0,175,241,0.1)">&#128197;</div>
-      <div class="session-header-text">
-        <h2>Accelarate Conference Logistics &amp; Agenda</h2>
-        <div class="session-speakers">Cary Phillips, Matt Donovan</div>
-      </div>
-      <div class="expand-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
-    </div>
-    <div class="session-body">
-      <div class="session-body-inner">
-        <div class="session-summary">Cary detailed the Accelarate conference agenda, hotel layout, session structure, and opportunities for scheduling meetings with executive leadership during the event.</div>
-        <ul class="takeaway-list">
-          <li>
-            <strong>Conference Agenda &amp; Schedule</strong>
-            <p>The conference spans two full days and two half days. Reps should share the agenda with customers to encourage attendance and help them plan which sessions to prioritize.</p>
-          </li>
-          <li>
-            <strong>Hotel Layout &amp; Meeting Spaces</strong>
-            <p>Cary described the hotel setup including session rooms, Accela U training areas, expo space, and special rooms. Knowing the layout is essential for scheduling customer meetings efficiently during the event.</p>
-          </li>
-          <li>
-            <strong>Executive &amp; Sales Meeting Opportunities</strong>
-            <p>Matt discussed the value of scheduling meetings with executive leadership during Accelarate, citing past examples like Cleveland and FDNY. Reps should use these opportunities to advance account relationships with C-level introductions.</p>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  <!-- Session 11: Mobile App & AI Matchmaking -->
-  <div class="session-card">
-    <div class="session-header" onclick="toggle(this)">
-      <div class="session-icon" style="background:rgba(0,206,195,0.1)">&#128241;</div>
-      <div class="session-header-text">
-        <h2>Mobile App, AI Matchmaking &amp; Lead Retrieval</h2>
-        <div class="session-speakers">Cary Phillips</div>
-      </div>
-      <div class="expand-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
-    </div>
-    <div class="session-body">
-      <div class="session-body-inner">
-        <div class="session-summary">Cary introduced the new Accelarate mobile app featuring AI-driven matchmaking and universal lead retrieval to facilitate networking and pipeline generation during the conference.</div>
-        <ul class="takeaway-list">
-          <li>
-            <strong>Mobile App Features</strong>
-            <p>The app allows attendees to input personal and professional interests, enabling reps to connect with relevant customers and product managers through AI-powered matchmaking. Targeted connections, not random hallway encounters.</p>
-          </li>
-          <li>
-            <strong>Lead Retrieval Integration</strong>
-            <p>All attendees will have access to lead retrieval functionality within the app, allowing reps to scan and record interactions. This supports post-event pipeline tracking and ensures no conversation goes unrecorded.</p>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  <!-- Session 12: Partner & Expo -->
-  <div class="session-card">
-    <div class="session-header" onclick="toggle(this)">
-      <div class="session-icon" style="background:rgba(234,116,69,0.1)">&#129309;</div>
-      <div class="session-header-text">
-        <h2>Partner &amp; Expo Investments</h2>
-        <div class="session-speakers">Cary Phillips, Angela Holden</div>
-      </div>
-      <div class="expand-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
-    </div>
-    <div class="session-body">
-      <div class="session-body-inner">
-        <div class="session-summary">Cary highlighted the expanded investment in the Accelarate expo, the role of partners in funding, and the introduction of new solution labs and dedicated booth spaces for Accela products.</div>
-        <ul class="takeaway-list">
-          <li>
-            <strong>Partner Contributions</strong>
-            <p>Angela secured partner support covering approximately a quarter of event expenses. Key partners are returning with new participants joining, strengthening the ecosystem presence at Accelarate.</p>
-          </li>
-          <li>
-            <strong>Expo Enhancements</strong>
-            <p>Expo investment increased from $30,000 to over $150,000, with new labs, solution stations, and marketing activities planned to enhance the attendee experience and drive product engagement.</p>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  <!-- Session 13: General Session & Speakers -->
-  <div class="session-card">
-    <div class="session-header" onclick="toggle(this)">
-      <div class="session-icon" style="background:rgba(0,104,190,0.1)">&#127908;</div>
-      <div class="session-header-text">
-        <h2>General Session, Speakers &amp; Special Events</h2>
-        <div class="session-speakers">Cary Phillips</div>
-      </div>
-      <div class="expand-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
-    </div>
-    <div class="session-body">
-      <div class="session-body-inner">
-        <div class="session-summary">Cary reviewed the general session lineup including keynote speakers, awards, and customer appreciation events planned for Accelarate.</div>
-        <ul class="takeaway-list">
-          <li>
-            <strong>Keynote Speakers</strong>
-            <p>Speakers include Noel Russell from the AI Leadership Institute and John Dorenbos. Both bring unique perspectives designed to energize the audience and connect to the conference themes.</p>
-          </li>
-          <li>
-            <strong>Awards &amp; Community Events</strong>
-            <p>The Trendsetter Awards Luncheon, Birds of a Feather sessions, Community Live, and the Accelebration customer appreciation event featuring the Spin Doctors at the Fillmore are all on the agenda.</p>
-          </li>
-          <li>
-            <strong>Gov for Good Initiative</strong>
-            <p>The Gov for Good program, in partnership with Nolivate Black, is aimed at giving back to the New Orleans community and offsetting the environmental impact of the event.</p>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  <!-- Session 14: CIO Roundtable -->
-  <div class="session-card">
-    <div class="session-header" onclick="toggle(this)">
-      <div class="session-icon" style="background:rgba(234,198,69,0.1)">&#127963;</div>
-      <div class="session-header-text">
-        <h2>CIO Roundtable &amp; Session Planning</h2>
-        <div class="session-speakers">Cary Phillips, Matt Donovan</div>
-      </div>
-      <div class="expand-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
-    </div>
-    <div class="session-body">
-      <div class="session-body-inner">
-        <div class="session-summary">Cary provided details on the CIO Roundtable, breakout session structure, and the timeline for session selection, encouraging reps to schedule pre-show touchpoints.</div>
-        <ul class="takeaway-list">
-          <li>
-            <strong>CIO Roundtable Details</strong>
-            <p>The CIO Roundtable is on the second full day, facilitated by Bob Leake and Amber, with guest Terry Takai. Reps should invite their CIOs for peer-level discussions — a high-value relationship-building opportunity.</p>
-          </li>
-          <li>
-            <strong>Breakout Session Structure</strong>
-            <p>32 customer-led sessions, 22 Accela-led sessions, and 11 Accela U sessions, with some repeatable. Session selection will be available by end of August.</p>
-          </li>
-          <li>
-            <strong>Pre-Show Touchpoints</strong>
-            <p>Matt advised reps to schedule calls with registered agencies to recommend sessions and introductions, leveraging PS and managed services teams for tailored guidance. Preparation before the event drives results during it.</p>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  <!-- Session 15: Travel & Logistics -->
-  <div class="session-card">
-    <div class="session-header" onclick="toggle(this)">
-      <div class="session-icon" style="background:rgba(0,175,241,0.1)">&#9992;</div>
-      <div class="session-header-text">
-        <h2>Travel, Expense &amp; Staff Logistics</h2>
-        <div class="session-speakers">Cary Phillips</div>
-      </div>
-      <div class="expand-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
-    </div>
-    <div class="session-body">
-      <div class="session-body-inner">
-        <div class="session-summary">Cary outlined travel booking procedures, expense reporting requirements, and staff shuttle arrangements for Accelarate, emphasizing compliance and cost-saving measures.</div>
-        <ul class="takeaway-list">
-          <li>
-            <strong>Travel Booking &amp; Expense Reporting</strong>
-            <p>Do not book flights until approved. Hotel booking and per diem adjustments were explained. All expenses must be coded correctly in Concur — select "user conference" on the workspace for proper chargeback.</p>
-          </li>
-          <li>
-            <strong>Staff Shuttle Arrangements</strong>
-            <p>Airport shuttles will be provided for staff arriving on Monday to reduce transportation costs. Amenities provided during transit. Details will follow closer to the event.</p>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  <!-- Session 16: Sales Outreach -->
-  <div class="session-card">
-    <div class="session-header" onclick="toggle(this)">
-      <div class="session-icon" style="background:rgba(234,116,69,0.1)">&#127919;</div>
-      <div class="session-header-text">
-        <h2>Sales Outreach Incentives &amp; Accountability</h2>
-        <div class="session-speakers">Cary Phillips</div>
-      </div>
-      <div class="expand-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
-    </div>
-    <div class="session-body">
-      <div class="session-body-inner">
-        <div class="session-summary">Cary set a directive for all participants to identify and invite three unregistered agencies to Accelarate, with a prize incentive for successful outreach and email-based tracking.</div>
-        <ul class="takeaway-list">
-          <li>
-            <strong>Outreach Challenge</strong>
-            <p>Each participant must email three targeted agencies or customers not yet registered for Accelarate. A prize is offered for those who successfully convert all three. Email Cary your list by Friday.</p>
-          </li>
-          <li>
-            <strong>Tracking &amp; Accountability</strong>
-            <p>Email is the tracking method — send your three targets to Cary. The dashboard will be used to verify registrations and measure conversion against targets.</p>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  <!-- Session 17: Civic AI Quiz -->
-  <div class="session-card">
-    <div class="session-header" onclick="toggle(this)">
-      <div class="session-icon" style="background:rgba(0,206,195,0.1)">&#129504;</div>
-      <div class="session-header-text">
-        <h2>Product Marketing &amp; Civic AI Positioning Quiz</h2>
-        <div class="session-speakers">Ryan Kuykendall</div>
-      </div>
-      <div class="expand-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
-    </div>
-    <div class="session-body">
-      <div class="session-body-inner">
-        <div class="session-summary">Ryan led a Kahoot quiz covering Accela product marketing, Civic AI positioning, and competitive differentiation, engaging participants in a review of key messaging and technical concepts.</div>
-        <ul class="takeaway-list">
-          <li>
-            <strong>Civic AI Messaging &amp; Differentiation</strong>
-            <p>Quiz covered Civic AI's embedded approach, how it augments staff judgment rather than replacing it, grounding in agency data, and competitive advantages over alternative solutions in the market.</p>
-          </li>
-          <li>
-            <strong>Product Features &amp; Competitive Positioning</strong>
-            <p>Questions covered Accela's configuration-over-customization approach, platform strategy, public portal accessibility, and differentiation against competitors like OpenGov and Granicus.</p>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  <!-- Session 18: Awards Ceremony -->
-  <div class="session-card">
-    <div class="session-header" onclick="toggle(this)">
-      <div class="session-icon" style="background:rgba(234,198,69,0.15)">&#127942;</div>
-      <div class="session-header-text">
-        <h2>Awards Ceremony</h2>
-        <div class="session-speakers">Cary Phillips, Matt Donovan, Tom Henke, Clint Knittle, Jason Jordan, Gabe Graham, Gary Zepke, Nick Gough</div>
-      </div>
-      <div class="expand-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
-    </div>
-    <div class="session-body">
-      <div class="session-body-inner">
-        <div class="session-summary">Cary led the awards ceremony recognizing individuals and teams across GTM and cross-functional areas for setting high standards and exceptional performance throughout the year.</div>
-        <ul class="takeaway-list">
-          <li>
-            <strong>Win Wire Award</strong>
-            <p>Presented to Kit Linscott, chosen unanimously by the RVPs for their outstanding performance in the RSC call. The award recognizes exceptional sales cycle insights and best practice sharing.</p>
-          </li>
-          <li>
-            <strong>Growth Engine Award</strong>
-            <p>Jason Jordan presented to Kelley Watkins (Order Management) and Caitlin Carter (Renewals) for their behind-the-scenes contributions to the RevOps team's management of $150M in renewals, order management, pricing, and analysis.</p>
-          </li>
-          <li>
-            <strong>Marketing Impact Award</strong>
-            <p>Gabe presented to DeAnne Dodd for leading the company rebrand (500 assets updated, all done internally) and Nick Gough for building the BDR and demand generation function from the ground up, including team, tech stack, and both inbound and outbound pipeline growth.</p>
-          </li>
-          <li>
-            <strong>Technical Impact Award</strong>
-            <p>Gary Zepke presented to Jeremy Aquino for exceptional technical support and dedication to demo preparation and execution, consistently providing support at all hours and being a reliable resource for the team and customers.</p>
-          </li>
-          <li>
-            <strong>Team Player &amp; Character Awards</strong>
-            <p>Voted on by the team and RVPs: Ryan Aughtry (technical support and collaboration), Animesh Irkulla (consistent team support), Eric Strang (cross-functional leadership and contract improvements), and Patrick Perez (streamlining contract processes with the "three turn rule").</p>
-          </li>
-          <li>
-            <strong>Pipeline Builder of the Year</strong>
-            <p>Nick presented to Patrick for leading the team in calls, talk time, opportunities created, and pipeline generation — outperforming all other BDR team members across every quantitative metric.</p>
-          </li>
-          <li>
-            <strong>Breakthrough Rookie Award</strong>
-            <p>Clint Knittle presented to Justin Dyszelski for closing over $200,000 in new and expansion ARR across 11 agencies within their first year — the largest career progression jump on the team.</p>
-          </li>
-          <li>
-            <strong>Top Revenue Producer</strong>
-            <p>Tom Henke presented to Zach Ramsey as the top producing account executive in the company and the Southeast region, with a background of sustained high performance.</p>
-          </li>
-          <li>
-            <strong>Top Novotx Revenue Producer</strong>
-            <p>Michael Boyd was awarded for generating the highest Novotx revenue, with the competition decided by a margin of less than $1,200 — primarily driven by success in acquiring City Works customers.</p>
-          </li>
-          <li>
-            <strong>Trifecta Award &amp; Slugger Award</strong>
-            <p>Matt Donovan presented the Trifecta Award to Rob Mago for being the top account director, new logo champion (5 net new logos), and Slugger Award winner for the largest deal of the year — City of Milwaukee at $475,000, with total revenue of $967,000. Cary presented a custom-engraved bat to commemorate the achievement.</p>
-          </li>
-        </ul>
-      </div>
+  <div class="recap-body">
+    <div class="recap-body-inner">
+      <div class="recap-summary">The awards ceremony recognized individuals and teams across GTM and cross-functional areas for setting high standards and exceptional performance throughout the year.</div>
+      <ul class="takeaway-list">
+        <li><strong>Win Wire Award</strong><p>Kit Linscott — chosen unanimously by the RVPs for outstanding performance in the RSC call and exceptional sales cycle insights.</p></li>
+        <li><strong>Growth Engine Award</strong><p>Kelley Watkins (Order Management) and Caitlin Carter (Renewals) — recognized by Jason Jordan for their behind-the-scenes contributions to the RevOps team's management of $150M in renewals.</p></li>
+        <li><strong>Marketing Impact Award</strong><p>DeAnne Dodd for leading the company rebrand (500 assets updated, all done internally) and Nick Gough for building the BDR and demand generation function from the ground up.</p></li>
+        <li><strong>Technical Impact Award</strong><p>Jeremy Aquino — presented by Gary Zepke for exceptional technical support and dedication to demo preparation, consistently providing support at all hours.</p></li>
+        <li><strong>Team Player &amp; Character Awards</strong><p>Ryan Aughtry (technical support &amp; collaboration), Animesh Irkulla (consistent team support), Eric Strang (cross-functional leadership &amp; contract improvements), Patrick Perez (streamlining contracts with the "three turn rule").</p></li>
+        <li><strong>Pipeline Builder of the Year</strong><p>Patrick — presented by Nick for leading the team in calls, talk time, opportunities created, and pipeline generation across every metric.</p></li>
+        <li><strong>Breakthrough Rookie Award</strong><p>Justin Dyszelski — presented by Clint Knittle for closing over $200,000 in new and expansion ARR across 11 agencies in their first year.</p></li>
+        <li><strong>Top Revenue Producer</strong><p>Zach Ramsey — presented by Tom Henke as the top producing account executive in the company and the Southeast region.</p></li>
+        <li><strong>Top Novotx Revenue Producer</strong><p>Michael Boyd — highest Novotx revenue, competition decided by less than $1,200, driven by success in acquiring CityWorks customers.</p></li>
+        <li><strong>Trifecta Award &amp; Slugger Award</strong><p>Rob Mago — presented by Matt Donovan. Top account director, new logo champion (5 net new logos), and largest deal of the year: City of Milwaukee at $475,000 with total revenue of $967,000. Custom-engraved Slugger bat awarded.</p></li>
+      </ul>
     </div>
   </div>
 
@@ -753,18 +432,19 @@ h1,h2,h3,h4 { font-weight:700; letter-spacing:-0.02em; line-height:1.1; }
 </div>
 
 <script>
-function toggle(header) {
-  var card = header.parentElement;
-  var body = card.querySelector('.session-body');
-  if (card.classList.contains('open')) {
-    card.classList.remove('open');
+function toggle(row) {
+  var body = row.nextElementSibling;
+  if (!body || !body.classList.contains('recap-body')) return;
+  if (row.classList.contains('open')) {
+    row.classList.remove('open');
     body.style.maxHeight = '0';
   } else {
-    document.querySelectorAll('.session-card.open').forEach(function(c) {
-      c.classList.remove('open');
-      c.querySelector('.session-body').style.maxHeight = '0';
+    document.querySelectorAll('.agenda-row.open').forEach(function(r) {
+      r.classList.remove('open');
+      var b = r.nextElementSibling;
+      if (b && b.classList.contains('recap-body')) b.style.maxHeight = '0';
     });
-    card.classList.add('open');
+    row.classList.add('open');
     body.style.maxHeight = body.scrollHeight + 'px';
   }
 }
