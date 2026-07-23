@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 2 Recap — SKO FY27</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0D263A;
+  --deep-blue: #0068BE;
+  --light-blue: #00AFF1;
+  --teal: #00CEC3;
+  --cool-gray: #D4D8D9;
+  --yellow: #EAC645;
+  --orange: #EA7445;
+  --white: #FFFFFF;
+  --sand: #F4F1EC;
+  --bg-warm: #F8F9FA;
+  --text: #0D263A;
+  --text-secondary: #4A5568;
+  --text-muted: #718096;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+  color: var(--text);
+  background: var(--white);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.5;
+}
+h1,h2,h3,h4 { font-weight:700; letter-spacing:-0.02em; line-height:1.1; }
+
+.page-hero {
+  background: linear-gradient(160deg, rgba(13,38,58,0.9) 0%, rgba(0,104,190,0.8) 100%);
+  padding: 100px 40px 60px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.page-hero::after {
+  content:''; position:absolute; bottom:-2px; left:0; right:0; height:40px;
+  background:var(--white); clip-path:ellipse(55% 100% at 50% 100%); z-index:1;
+}
+.page-hero .back-link {
+  position: absolute; top: 28px; left: 40px;
+  display: inline-flex; align-items: center; gap: 6px;
+  color: rgba(255,255,255,0.6); text-decoration: none; font-size: 14px; font-weight: 500;
+  transition: color 0.2s;
+}
+.page-hero .back-link:hover { color: var(--white); }
+.page-hero .back-link svg { width: 16px; height: 16px; }
+.page-hero h1 {
+  font-size: 48px; color: var(--white); font-weight: 800;
+  margin-bottom: 8px; position: relative; z-index: 2;
+}
+.page-hero .date {
+  font-size: 16px; color: rgba(255,255,255,0.5); font-weight: 500;
+  letter-spacing: 1px; position: relative; z-index: 2;
+}
+
+.container { max-width: 900px; margin: 0 auto; padding: 0 40px; }
+
+.sessions { padding: 60px 0 80px; }
+
+.session-card {
+  margin-bottom: 24px;
+  border: 1px solid rgba(0,0,0,0.06);
+  border-radius: 14px;
+  overflow: hidden;
+  transition: box-shadow 0.25s;
+}
+.session-card:hover { box-shadow: 0 4px 24px rgba(0,0,0,0.06); }
+.session-card.open { box-shadow: 0 6px 32px rgba(0,0,0,0.08); }
+
+.session-header {
+  display: flex; align-items: center; gap: 16px;
+  padding: 20px 24px; cursor: pointer; user-select: none;
+  background: var(--white);
+  transition: background 0.2s;
+}
+.session-header:hover { background: var(--bg-warm); }
+
+.session-icon {
+  width: 46px; height: 46px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; flex-shrink: 0;
+}
+
+.session-header-text { flex: 1; }
+.session-header-text h2 { font-size: 17px; font-weight: 700; color: var(--navy); margin-bottom: 3px; }
+.session-header-text .session-speakers { font-size: 13px; color: var(--text-muted); font-weight: 500; }
+
+.expand-arrow {
+  width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;
+  color: var(--text-muted); transition: transform 0.25s, color 0.2s; flex-shrink: 0;
+  background: var(--sand); border-radius: 50%;
+}
+.session-card.open .expand-arrow { transform: rotate(180deg); color: var(--deep-blue); background: rgba(0,104,190,0.1); }
+
+.session-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+.session-body-inner { padding: 0 24px 28px; }
+
+.session-summary {
+  font-size: 14px; line-height: 1.7; color: var(--text-secondary);
+  margin-bottom: 20px; padding-bottom: 16px;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.takeaway-list { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+.takeaway-list li {
+  padding: 14px 18px;
+  background: var(--bg-warm);
+  border-left: 3px solid var(--deep-blue);
+  border-radius: 0 10px 10px 0;
+}
+.takeaway-list li strong {
+  display: block; font-size: 14px; font-weight: 700;
+  color: var(--navy); margin-bottom: 4px;
+}
+.takeaway-list li p {
+  font-size: 13px; line-height: 1.65; color: var(--text-secondary);
+}
+
+</style>
+</head>
+<body>
+
+<div class="page-hero">
+  <a href="index.html" class="back-link">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Back to SKO Home
+  </a>
+  <h1>Day 2 Recap</h1>
+  <div class="date">Wednesday, July 22, 2026</div>
+</div>
+
+<div class="container">
+<div class="sessions">
+
+  <!-- Session 1: Regional Sales Team Achievements -->
+  <div class="session-card">
+    <div class="session-header" onclick="toggle(this)">
+      <div class="session-icon" style="background:rgba(0,175,241,0.1)">&#127942;</div>
+      <div class="session-header-text">
+        <h2>Regional Sales Team Achievements &amp; Recognition</h2>
+        <div class="session-speakers">Matt Donovan, Clint Knittle</div>
+      </div>
+      <div class="expand-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+    </div>
+    <div class="session-body">
+      <div class="session-body-inner">
+        <div class="session-summary">Matt Donovan and Clint Knittle highlighted their respective sales teams' accomplishments, recognized individual contributions, and discussed strategies and lessons learned from significant deals.</div>
+        <ul class="takeaway-list">
+          <li>
+            <strong>Team Member Recognition</strong>
+            <p>Matt recognized Tyler for most deals closed, Rob for the major Milwaukee deal, Seth for upsells and cross-sells in a saturated territory, Juan for net new wins in Johnson County and other regions, and welcomed new team member Mike.</p>
+          </li>
+          <li>
+            <strong>Sales Strategies &amp; Lessons</strong>
+            <p>Clint shared a detailed lesson from the City of Oakland deal, emphasizing the importance of securing buy-in from all key stakeholder groups — IT, business, and organizational leaders — and the value of fresh perspectives and peer reviews in sales processes.</p>
+          </li>
+          <li>
+            <strong>Team Structure &amp; Coverage</strong>
+            <p>Clint introduced his team: Nico (Rocky Mountain), Sandi (Northern California), Justin (large multi-state/province territory), and Toby (Pacific Northwest), describing their territories, backgrounds, and recent successes.</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Session 2: GTM Strategy & Product Expansion -->
+  <div class="session-card">
+    <div class="session-header" onclick="toggle(this)">
+      <div class="session-icon" style="background:rgba(0,206,195,0.1)">&#128640;</div>
+      <div class="session-header-text">
+        <h2>Go-to-Market Strategy &amp; Product Expansion for FY27</h2>
+        <div class="session-speakers">Eric McCauley, Amber D'Ottavio, Kit Linscott, Gary Zepke, Eddie Hunt</div>
+      </div>
+      <div class="expand-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+    </div>
+    <div class="session-body">
+      <div class="session-body-inner">
+        <div class="session-summary">Eric and Amber presented the FY27 go-to-market strategy, focusing on expanding product offerings including Novotx, Secure Pay, AI features, and the Accela Marketplace.</div>
+        <ul class="takeaway-list">
+          <li>
+            <strong>Product Portfolio Expansion</strong>
+            <p>Eric discussed the increased breadth of Accela's product portfolio — Novotx for asset management, Secure Pay for payment processing, and AI-driven features — emphasizing the unique value of offering end-to-end solutions compared to competitors.</p>
+          </li>
+          <li>
+            <strong>Lobbyist &amp; Partner Engagement</strong>
+            <p>The team described leveraging lobbyist relationships, particularly in Ontario, to promote Novotx through targeted webinars and conference demos. Gabe Graham's marketing team is supporting these initiatives with materials and outreach.</p>
+          </li>
+          <li>
+            <strong>Secure Pay Launch &amp; First Deal</strong>
+            <p>Amber and the product team demonstrated Secure Pay's citizen and back-office payment workflows, refund processing, and reconciliation. The first Secure Pay deal was closed by Kit. The product itself was developed using AI agents.</p>
+          </li>
+          <li>
+            <strong>AI-Driven Citizen Experience</strong>
+            <p>The product team showcased AI-assisted permitting where the OpenCounter digital assistant and AI pre-check features automate and validate most of the permit application, reducing manual entry and errors for both citizens and staff.</p>
+          </li>
+          <li>
+            <strong>Accela Marketplace Introduction</strong>
+            <p>Amber introduced the Accela Marketplace — a platform enabling agencies to certify private providers for inspections and plan reviews, generating recurring revenue for both agencies and Accela. Demonstrated the full workflow from citizen request to provider fulfillment and payment.</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Session 3: Executive Insights -->
+  <div class="session-card">
+    <div class="session-header" onclick="toggle(this)">
+      <div class="session-icon" style="background:rgba(234,198,69,0.1)">&#127963;</div>
+      <div class="session-header-text">
+        <h2>Executive Insights on Government Decision-Making</h2>
+        <div class="session-speakers">Lisa Benjamin (Lexicon Strategies, former COO of Atlanta)</div>
+      </div>
+      <div class="expand-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+    </div>
+    <div class="session-body">
+      <div class="session-body-inner">
+        <div class="session-summary">Lisa Benjamin provided an in-depth perspective on how government executives make decisions, the importance of aligning with executive priorities, and strategies for building trusted relationships to accelerate sales cycles.</div>
+        <ul class="takeaway-list">
+          <li>
+            <strong>Government Decision-Making Processes</strong>
+            <p>Lisa described the daily responsibilities of a city COO, the complexity of managing hundreds of software programs, and the critical role of executive alignment, budget cycles, and procurement processes in technology purchasing decisions.</p>
+          </li>
+          <li>
+            <strong>Building Executive Relationships</strong>
+            <p>She emphasized leading with the government's agenda, connecting through mutual relationships, and consistently demonstrating value. Few vendors proactively engage executives with relevant solutions — those who do stand out immediately.</p>
+          </li>
+          <li>
+            <strong>Case Study: Atlanta Account Transition</strong>
+            <p>Lisa presented a case study on Accela's account transition in Atlanta, highlighting missed signals, the importance of executive engagement, and how competitors succeeded by focusing on outcomes and maintaining a presence with decision-makers.</p>
+          </li>
+          <li>
+            <strong>Actionable Recommendations</strong>
+            <p>She provided a framework for stakeholder mapping, executive engagement cadence, and early warning monitoring. Recommended actions include secret shopping, executive outreach, and sharing outcome-focused metrics with new leaders.</p>
+          </li>
+          <li>
+            <strong>Q&amp;A: Funding &amp; Demos</strong>
+            <p>Lisa answered questions about using revenue bonds for software, the cadence of strategic plan reviews, navigating IT gatekeeping, effective demo practices, and the value of ongoing professional services relationships.</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Session 4: Legal Collaboration -->
+  <div class="session-card">
+    <div class="session-header" onclick="toggle(this)">
+      <div class="session-icon" style="background:rgba(0,104,190,0.1)">&#9878;</div>
+      <div class="session-header-text">
+        <h2>Legal Team Collaboration &amp; Contracting Best Practices</h2>
+        <div class="session-speakers">Aaron</div>
+      </div>
+      <div class="expand-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+    </div>
+    <div class="session-body">
+      <div class="session-body-inner">
+        <div class="session-summary">Aaron explained the legal department's role in supporting sales, outlined best practices for engaging legal early, and detailed strategies for efficient contract negotiation and leveraging contracting vehicles.</div>
+        <ul class="takeaway-list">
+          <li>
+            <strong>Legal's Role &amp; Teamwork</strong>
+            <p>Aaron clarified that legal's primary goal is building company value and supporting long-term customer relationships — not just protecting the company. Sales and legal need to work closely together throughout the deal process, not just at the end.</p>
+          </li>
+          <li>
+            <strong>Contracting Strategies</strong>
+            <p>Start with pre-negotiated contracting vehicles (NASPO, GSA) or Accela's standard paper to minimize friction. This approach saves significant time and resources compared to negotiating on customer paper every time.</p>
+          </li>
+          <li>
+            <strong>Negotiation Process</strong>
+            <p>Aaron described the "go slow to go fast" drafting approach, the two-round negotiation method, and the four legal pillars: liability, indemnification, warranties, and IP. Live conversations resolve issues far more efficiently than email threads.</p>
+          </li>
+          <li>
+            <strong>Partner &amp; Self-Service Tools</strong>
+            <p>Involve partners early for contracting vehicles. Upcoming AI-powered tools will generate standard legal documents and empower sales to handle routine contract modifications without waiting on legal.</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Session 5: Managed Services 2.0 -->
+  <div class="session-card">
+    <div class="session-header" onclick="toggle(this)">
+      <div class="session-icon" style="background:rgba(0,175,241,0.1)">&#128736;</div>
+      <div class="session-header-text">
+        <h2>Managed Services 2.0 &amp; Customer Success</h2>
+        <div class="session-speakers">Brenda DeGregory, Neil Wooten, Jonathan Ward</div>
+      </div>
+      <div class="expand-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+    </div>
+    <div class="session-body">
+      <div class="session-body-inner">
+        <div class="session-summary">Brenda, Neil, and Jonathan introduced the expanded Managed Services 2.0 offering, explaining its evolution from task-based support to a holistic approach focused on customer outcomes, governance, and cross-departmental integration.</div>
+        <ul class="takeaway-list">
+          <li>
+            <strong>Evolution of Managed Services</strong>
+            <p>The original managed services focused on technical tasks, but customer needs have shifted toward outcome-driven support requiring broader engagement across customer ecosystems. The 2.0 model meets customers where they are.</p>
+          </li>
+          <li>
+            <strong>Customer Ecosystem &amp; Governance</strong>
+            <p>Connecting business and IT stakeholders, establishing governance processes, and providing strategic guidance ensures customers realize the full value of the Accela platform — not just the features they initially bought.</p>
+          </li>
+          <li>
+            <strong>Case Study: San Bernardino County</strong>
+            <p>Despite having technical resources, San Bernardino County faced a disconnect between IT and business units that was driving potential churn. Intervention focused on organizational transformation and cross-departmental alignment rather than more technical support.</p>
+          </li>
+          <li>
+            <strong>New Service Elements</strong>
+            <p>The expanded offering includes automated testing, business insights, governance, KPIs, and platform insider access — positioning Accela as a strategic partner rather than just a technical service provider.</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Session 6: Managed Services Deep Dive -->
+  <div class="session-card">
+    <div class="session-header" onclick="toggle(this)">
+      <div class="session-icon" style="background:rgba(0,206,195,0.1)">&#128200;</div>
+      <div class="session-header-text">
+        <h2>Managed Services: Sizing, KPIs &amp; Governance</h2>
+        <div class="session-speakers">Cary Phillips, Jonathan Ward, Eric McCauley, Brenda DeGregory</div>
+      </div>
+      <div class="expand-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+    </div>
+    <div class="session-body">
+      <div class="session-body-inner">
+        <div class="session-summary">Cary led a deep dive on managed services sizing, KPI alignment, data visibility, and how to structure and differentiate service packages for different customer needs.</div>
+        <ul class="takeaway-list">
+          <li>
+            <strong>Labor Reduction &amp; Proactive Support</strong>
+            <p>The program takes labor-intensive tasks off the customer's plate, proactively addressing production issues and incomplete testing cycles. Small, high-impact changes are identified through direct user feedback and workflow analysis.</p>
+          </li>
+          <li>
+            <strong>Business Insights &amp; Automated Testing</strong>
+            <p>Business insights and automated testing are positioned as creative solutions for customers who may not want traditional incident or enhancement support. These services help farm accounts and identify upsell opportunities.</p>
+          </li>
+          <li>
+            <strong>KPI Alignment &amp; Data Visibility</strong>
+            <p>Jonathan explained how managed services provides ongoing analytics and scorecards to help agencies track performance. Agencies often lack visibility into their own processes and rely on manual reporting — the program fills that gap with automated data analysis.</p>
+          </li>
+          <li>
+            <strong>Package Customization &amp; Tiers</strong>
+            <p>Packages come in three tiers: entry-level core (a "taste" to encourage upsell), middle on-demand with hours buckets, and enterprise all-inclusive. The embedded team option is the "Cadillac" for customers needing dedicated resources, as done with California DCC.</p>
+          </li>
+          <li>
+            <strong>Onshore Resourcing &amp; Margins</strong>
+            <p>Clarify onshore resourcing requirements early — these significantly affect project margins. Ask about this during the sales process to ensure accurate contract stipulations and avoid margin surprises post-close.</p>
+          </li>
+          <li>
+            <strong>Governance vs. Business Insights</strong>
+            <p>Jonathan's team handles enterprise-level KPI analysis across the platform, while managed services focuses on detailed, process-specific analysis (licensing, permitting). The two approaches complement each other — enterprise analysis identifies areas that managed services can then optimize in detail.</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Session 7: AI & Automation in Sales -->
+  <div class="session-card">
+    <div class="session-header" onclick="toggle(this)">
+      <div class="session-icon" style="background:rgba(234,116,69,0.1)">&#129302;</div>
+      <div class="session-header-text">
+        <h2>AI &amp; Automation in Sales &amp; Product Development</h2>
+        <div class="session-speakers">Dakota Lust, Tammy Cohen</div>
+      </div>
+      <div class="expand-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+    </div>
+    <div class="session-body">
+      <div class="session-body-inner">
+        <div class="session-summary">Dakota and Tammy demonstrated how AI tools like Claude and AI agents are being leveraged for sales processes and product development, highlighting time savings, repeatability, and improved outcomes.</div>
+        <ul class="takeaway-list">
+          <li>
+            <strong>AI in Sales Processes</strong>
+            <p>Dakota explained how Claude is used to analyze call transcripts and demo recordings, apply MEDDIC methodology, and automate meeting preparation and Salesforce updates. The result: significant time savings and improved accuracy on every deal.</p>
+          </li>
+          <li>
+            <strong>AI in Product Development</strong>
+            <p>Tammy described how AI agents handled UX, code generation, testing, and validation in building Secure Pay — enabling faster and more consistent product delivery. AI isn't just a sales tool; it's changing how Accela builds products.</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Session 8: Customer Advocacy -->
+  <div class="session-card">
+    <div class="session-header" onclick="toggle(this)">
+      <div class="session-icon" style="background:rgba(0,104,190,0.1)">&#129309;</div>
+      <div class="session-header-text">
+        <h2>Customer Advocacy &amp; User Group Strategies</h2>
+        <div class="session-speakers">Jeff Reese</div>
+      </div>
+      <div class="expand-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+    </div>
+    <div class="session-body">
+      <div class="session-body-inner">
+        <div class="session-summary">Jeff discussed the importance of user groups, focus groups, and customer advocacy in driving product adoption, building trust, and generating organic growth, particularly in the Florida region.</div>
+        <ul class="takeaway-list">
+          <li>
+            <strong>User Group Structure</strong>
+            <p>Jeff outlined the structure of user groups — broad, regional, and ad hoc webinars — and their role in problem-solving. Industry partners and customer success teams are involved to provide expertise and strengthen relationships.</p>
+          </li>
+          <li>
+            <strong>Advocacy &amp; Expansion</strong>
+            <p>Customer-led agendas and peer sharing lead to increased trust, advocacy, and organic expansion of Accela solutions across agencies. When customers sell for you, the deal cycle accelerates and retention strengthens.</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Session 9: Novotx V6 -->
+  <div class="session-card">
+    <div class="session-header" onclick="toggle(this)">
+      <div class="session-icon" style="background:rgba(234,198,69,0.1)">&#127959;</div>
+      <div class="session-header-text">
+        <h2>Novotx V6 Positioning &amp; Demonstration</h2>
+        <div class="session-speakers">Animesh Irkulla, Reid Christianson</div>
+      </div>
+      <div class="expand-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+    </div>
+    <div class="session-body">
+      <div class="session-body-inner">
+        <div class="session-summary">Animesh and Reid led a comprehensive walkthrough of the Novotx V6 platform, highlighting its differentiators and demonstrating how these features address challenges faced by public agencies in infrastructure management.</div>
+        <ul class="takeaway-list">
+          <li>
+            <strong>Industry Challenges Overview</strong>
+            <p>Animesh and Reid described the current state of public infrastructure — water loss, aging assets, poor road conditions — and how agencies struggle with reactive maintenance, paper-based processes, and siloed data. Novotx V6 addresses all of these head-on.</p>
+          </li>
+          <li>
+            <strong>Platform Differentiators</strong>
+            <p>Five key differentiators: advanced GIS integration, robust capital planning, automation capabilities, enterprise scalability, and AI-driven features. Each addresses specific pain points in asset management that competitors like Trimble CityWorks don't solve as comprehensively.</p>
+          </li>
+          <li>
+            <strong>GIS Integration</strong>
+            <p>Reid demonstrated how Novotx supports various asset types, tracks asset condition and work orders spatially, and enables advanced features like 3D GIS for field crews — positioning it as a leader in spatial asset management.</p>
+          </li>
+          <li>
+            <strong>Capital Planning</strong>
+            <p>The capital planning module allows agencies to model asset deterioration, plan maintenance and repairs, and justify budget requests with data-driven projections. Subject matter expert Cody Steggle contributed to its development.</p>
+          </li>
+          <li>
+            <strong>Automation &amp; Connected Operations</strong>
+            <p>No-code automation for work orders includes cross-departmental workflows, supervisor sign-offs, and automated GIS updates. These features reduce manual effort and improve data quality compared to competitors.</p>
+          </li>
+          <li>
+            <strong>AI &amp; Integration Features</strong>
+            <p>AI capabilities include voice-to-fill inspection forms and flexible integration with various AI models, plus out-of-the-box integrations with platforms like Accela. Agencies can adapt AI to their workflows while maintaining security and governance.</p>
+          </li>
+          <li>
+            <strong>Customer Enablement Resources</strong>
+            <p>Resources in development include a cloud agent for competitive intelligence, RFP templates, and Figma-style presentation tools. The team requested feedback to further tailor these assets to sales needs.</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Session 10: Partner Ecosystem -->
+  <div class="session-card">
+    <div class="session-header" onclick="toggle(this)">
+      <div class="session-icon" style="background:rgba(0,175,241,0.1)">&#127760;</div>
+      <div class="session-header-text">
+        <h2>Partner &amp; Technology Ecosystem Strategy</h2>
+        <div class="session-speakers">Vito, Jed, Anooj Shah</div>
+      </div>
+      <div class="expand-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+    </div>
+    <div class="session-body">
+      <div class="session-body-inner">
+        <div class="session-summary">Vito, Jed, and Anooj presented the company's approach to building a robust partner ecosystem, covering service and technology partnerships, M&amp;A strategy, and the integration of new partners from the CityWorks world.</div>
+        <ul class="takeaway-list">
+          <li>
+            <strong>Service &amp; Channel Partnerships</strong>
+            <p>Jed described the roles of service and channel partners — implementation and reseller — and emphasized deal registration, governance, and tracking partner performance to drive bookings and customer success.</p>
+          </li>
+          <li>
+            <strong>Technology Partnerships &amp; ISVs</strong>
+            <p>Anooj discussed ISV partnerships for closing capability gaps and winning "white space" in the customer base. Examples include License Corp, Platform OS, Deckard, and City Detect — enabling reselling of partner solutions.</p>
+          </li>
+          <li>
+            <strong>M&amp;A &amp; Strategic Growth</strong>
+            <p>Vito explained how M&amp;A, partnerships, and strategic investments are coordinated to address gaps in the offering. Field input is encouraged to identify potential targets for partnership or acquisition.</p>
+          </li>
+          <li>
+            <strong>Partner Network Expansion</strong>
+            <p>Jed highlighted onboarding of major engineering and geospatial firms like KCI and WSP, and the migration of CityWorks partners, broadening reach in asset management and permitting.</p>
+          </li>
+          <li>
+            <strong>Deal Registration &amp; Governance</strong>
+            <p>New processes include faster review timelines, clearer definitions of proprietary deals, and emphasis on partner influence in opportunity origination.</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Session 11: BDR Performance -->
+  <div class="session-card">
+    <div class="session-header" onclick="toggle(this)">
+      <div class="session-icon" style="background:rgba(234,116,69,0.1)">&#128200;</div>
+      <div class="session-header-text">
+        <h2>BDR Team Performance &amp; Pipeline Development</h2>
+        <div class="session-speakers">Nick Gough</div>
+      </div>
+      <div class="expand-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+    </div>
+    <div class="session-body">
+      <div class="session-body-inner">
+        <div class="session-summary">Nick presented the BDR team's structure, performance metrics, and strategies for achieving an ambitious $30M quota in FY27, emphasizing improved tools, data, and processes.</div>
+        <ul class="takeaway-list">
+          <li>
+            <strong>Team Structure &amp; Achievements</strong>
+            <p>Nick introduced the BDR team, described territory divisions, and reviewed FY26 performance: 129% quota attainment, high meeting completion and conversion rates, and an average deal size of $95K.</p>
+          </li>
+          <li>
+            <strong>Pipeline Development Strategy</strong>
+            <p>FY27 strategy focuses on increasing completed meetings per BDR, leveraging Pursuit and Clay for better targeting and messaging, and maintaining high conversion and ACV metrics.</p>
+          </li>
+          <li>
+            <strong>Operational Improvements</strong>
+            <p>New tools adopted for contact data enrichment, personalized outreach, and analytics. The team is transitioning to Gong Engage for advanced conversational intelligence and process optimization.</p>
+          </li>
+          <li>
+            <strong>Risk Management</strong>
+            <p>Nick emphasized disciplined execution, avoiding distractions, and iterating on proven playbooks to sustain and improve performance. The playbook works — don't reinvent it, refine it.</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Session 12: RevOps & Sales Enablement -->
+  <div class="session-card">
+    <div class="session-header" onclick="toggle(this)">
+      <div class="session-icon" style="background:rgba(0,206,195,0.1)">&#9881;</div>
+      <div class="session-header-text">
+        <h2>RevOps, Pricing &amp; Sales Enablement</h2>
+        <div class="session-speakers">Danielle Snell, Bryanna Vandenberg, Ryan Aughtry</div>
+      </div>
+      <div class="expand-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+    </div>
+    <div class="session-body">
+      <div class="session-body-inner">
+        <div class="session-summary">Danielle, Bryanna, and Ryan detailed new tools and processes for pricing, quoting, proposal automation, and AI-driven sales support aimed at streamlining sales operations.</div>
+        <ul class="takeaway-list">
+          <li>
+            <strong>Novotx Pricing Tool</strong>
+            <p>Danielle introduced a new pricing tool for Novotx Elements — transparent, value-based pricing by domain and asset count, with clear implementation and hosting fees, and support for expansion pricing.</p>
+          </li>
+          <li>
+            <strong>Quoting &amp; Deal Governance</strong>
+            <p>Improvements include self-serve quoting, CongaSign for e-signatures, and new blockers and risk codes for renewals and deal tracking. Less friction in the process, more visibility into deal health.</p>
+          </li>
+          <li>
+            <strong>Proposal Automation with Loopio</strong>
+            <p>Bryanna demonstrated the Loopio platform for automating RFP responses — a centralized content library, AI-generated answers, and SME collaboration to accelerate proposal generation.</p>
+          </li>
+          <li>
+            <strong>AI Agents &amp; Sales Support</strong>
+            <p>Ryan showcased Claude integration with Salesforce, Gong, and Pursuit, enabling automated meeting briefs, follow-ups, and CRM updates. Plans for further automation with user feedback driving development priorities.</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Session 13: Pursuit Platform -->
+  <div class="session-card">
+    <div class="session-header" onclick="toggle(this)">
+      <div class="session-icon" style="background:rgba(0,104,190,0.1)">&#128161;</div>
+      <div class="session-header-text">
+        <h2>Pursuit Platform Integration &amp; Territory Planning</h2>
+        <div class="session-speakers">Mike (Pursuit)</div>
+      </div>
+      <div class="expand-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+    </div>
+    <div class="session-body">
+      <div class="session-body-inner">
+        <div class="session-summary">Mike from Pursuit introduced the platform's capabilities for account scoring, territory planning, and pipeline development, and outlined the onboarding process for Accela's sales team.</div>
+        <ul class="takeaway-list">
+          <li>
+            <strong>Account Scoring &amp; Prioritization</strong>
+            <p>Pursuit's account scoring uses data on pain points, leadership changes, contracts, and fiscal timing to help reps prioritize accounts. Scoring models are explainable and adjustable — reps can see why an account ranks where it does.</p>
+          </li>
+          <li>
+            <strong>Radar &amp; Signal Monitoring</strong>
+            <p>The Radar feature provides daily updates on relevant events in each territory — council meetings, RFPs, leadership changes — and enables quick action through integrated workflows.</p>
+          </li>
+          <li>
+            <strong>Data Integration &amp; Collaboration</strong>
+            <p>Pursuit integrates with Salesforce and Claude, providing contacts, signals, and research to support sales activities. Multiplayer mode enables coordination between BDRs and AEs on shared accounts.</p>
+          </li>
+          <li>
+            <strong>Onboarding &amp; Feedback</strong>
+            <p>The Pursuit team outlined the onboarding plan for Accela users, encouraged feedback for continuous improvement, and emphasized their commitment to supporting the sales team's success.</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<script>
+function toggle(header) {
+  var card = header.parentElement;
+  var body = card.querySelector('.session-body');
+  if (card.classList.contains('open')) {
+    card.classList.remove('open');
+    body.style.maxHeight = '0';
+  } else {
+    document.querySelectorAll('.session-card.open').forEach(function(c) {
+      c.classList.remove('open');
+      c.querySelector('.session-body').style.maxHeight = '0';
+    });
+    card.classList.add('open');
+    body.style.maxHeight = body.scrollHeight + 'px';
+  }
+}
+</script>
+</body>
+</html>
