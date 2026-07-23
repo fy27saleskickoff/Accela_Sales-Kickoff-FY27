@@ -34,9 +34,6 @@ header .subtitle{font-size:11px;color:rgba(255,255,255,0.4);letter-spacing:1px}
 .rtl .game{align-items:flex-end}
 .slot{width:105px;height:18px;padding:1px 4px;font-size:10px;line-height:16px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);color:#dde5ed;cursor:pointer;user-select:none}
 .slot:hover{background:rgba(92,224,255,0.12);border-color:rgba(92,224,255,0.4)}
-.controls{text-align:center;margin:10px 0 6px}
-.controls button{background:rgba(255,80,80,0.15);color:#ff8080;border:1px solid rgba(255,80,80,0.3);padding:4px 14px;font-size:10px;letter-spacing:1px;cursor:pointer;border-radius:4px}
-.controls button:hover{background:rgba(255,80,80,0.3)}
 .slot.empty{background:transparent;border-color:rgba(255,255,255,0.06)}
 .slot.winner{background:rgba(0,180,216,0.25);color:#5ce0ff;font-weight:600;border-color:rgba(0,180,216,0.5)}
 .slot.loser{text-decoration:line-through;color:rgba(255,255,255,0.2);background:rgba(255,255,255,0.015)}
@@ -446,7 +443,6 @@ header .subtitle{font-size:11px;color:rgba(255,255,255,0.4);letter-spacing:1px}
   </div>
 </div>
 </div>
-<div class="controls"><button onclick="resetBracket()">RESET BRACKET</button></div>
 <script>
 var PLAYIN_MAP = {"0":[0,4],"1":[0,12],"2":[1,4],"3":[1,12],"4":[2,4],"5":[2,12],"6":[3,2],"7":[3,8],"8":[3,13]};
 var STORAGE_KEY = 'sko_accelerator_v3';
@@ -557,12 +553,6 @@ function clickPlayin(el) {
   state['pi_'+piIdx+'_winner'] = name;
   var bk3 = getPlayinBracketKey(piIdx);
   if (bk3) state[bk3] = name;
-  saveState(); render();
-}
-
-function resetBracket() {
-  if (!confirm('Reset the entire bracket? All progress will be lost.')) return;
-  state = JSON.parse(JSON.stringify(DEFAULT_STATE));
   saveState(); render();
 }
 
